@@ -1,34 +1,47 @@
 <?php
-/**
- * index.php
- *
- * Entry point to the application, calls the app bootstrap and hands off to
- * the Router for directing to the proper controller
- *
- * Author: Mark Troyer <disco@box.com>
- * Created: 20 May 2013
- */
 
-// Load the app constants
-require(dirname(dirname(__FILE__)) . '/lib/StatusWolf/constants.php');
-require(dirname(dirname(__FILE__)) . '/lib/StatusWolf/Util/SWAutoLoader.php');
-require(dirname(dirname(__FILE__)) . '/lib/StatusWolf/SWConfig.php');
+require_once __DIR__ . '/../vendor/autoload.php';
 
-// Add the Views directory to the include path to get things going before
-// autoloading is initialized
-if (function_exists('ini_set'))
-{
-  ini_set('include_path', VIEWS . PATH_SEPARATOR . ini_get('include_path'));
-}
+use Symfony\Component\HttpFoundation\Request;
 
-// Bootstrap the app
-if (!include(APPLIB . 'bootstrap.php'))
-{
-  $bootstrap = false;
-}
+$sw = new Silex\Application();
 
-// Hand off the bootstrapped app to the Router
-if (!empty($bootstrap) && $bootstrap)
-{
-  $router = new SWRouter($_SERVER['REQUEST_URI']);
-}
+$sw->register(new StatusWolf\Config\ConfigServiceProvider(__DIR__ . '/../conf/sw_config.json'));
+
+$sw->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$sw->register(new Silex\Provider\SessionServiceProvider());
+$sw->register(new Silex\Provider\SecurityServiceProvider());
+$sw->register(new Silex\Provider\TwigServiceProvider(), array(
+	'twig.path' => __DIR__ . '/views',
+));
+
+$sw['session.test'] = true;
+
+$sw['security.firewalls'] = array(
+    'default' => array(
+        'pattern' => '^/',
+        'anonymous' => true,
+        'form' => array(
+            'login_path' => '/login',
+            'check_path' => '/login_check',
+        ),
+        'users' => array(
+            'disco' => array('ROLE_ADMIN', 'foo'),
+        ),
+    ),
+);
+
+$sw->get('/', function() use ($sw) {
+    return print_r($sw['db']);
+});
+
+$sw->get('/login', function(Request $request) use ($sw) {
+	return $sw['twig']->render('login.html', array(
+        'error' => $sw['security.last_error']($request),
+		'username' => $sw['session']->get('_security.last_username'),
+		'baseurl' => $sw['request']->getUriForPath('/'),
+        'extra_css' => array('login.css',),
+	));
+});
+
+$sw->run();

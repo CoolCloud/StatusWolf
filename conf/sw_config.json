@@ -1,0 +1,10 @@
+{
+    "debug": "true",
+    "db": {
+        "driver": "mysql",
+        "host": "localhost",
+        "database": "statuswolf",
+        "username": "statuswolf",
+        "password": "statuswolf"
+    }
+}

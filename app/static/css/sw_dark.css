@@ -1,0 +1,387 @@
+@charset "utf-8";
+/*
+ * =======================
+ * Animations
+ * =======================
+ */
+@-webkit-keyframes fadeOut {
+  /* line 7, ../sass/_animations.scss */
+  from {
+    opacity: 1;
+  }
+
+  /* line 8, ../sass/_animations.scss */
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  /* line 12, ../sass/_animations.scss */
+  from {
+    opacity: 1;
+  }
+
+  /* line 13, ../sass/_animations.scss */
+  to {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  /* line 17, ../sass/_animations.scss */
+  from {
+    opacity: 0;
+  }
+
+  /* line 18, ../sass/_animations.scss */
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  /* line 22, ../sass/_animations.scss */
+  from {
+    opacity: 0;
+  }
+
+  /* line 23, ../sass/_animations.scss */
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ *=======
+ * Mixins
+ *=======
+ */
+/*
+ *=====================
+ * HTML Tag Definitions
+ *=====================
+ */
+/* line 9, ../sass/_base.scss */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 15, ../sass/_base.scss */
+body {
+  background-color: #303030;
+  background-size: 100%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  color: rgba(234, 234, 234, 0.75);
+}
+
+/* line 23, ../sass/_base.scss */
+a {
+  text-decoration: none;
+  color: rgba(205, 205, 205, 0.75);
+}
+
+/* line 28, ../sass/_base.scss */
+label {
+  font-weight: bold;
+}
+
+/* line 32, ../sass/_base.scss */
+h1, h2, h3, h4, h5, h6 {
+  color: rgba(205, 205, 205, 0.75);
+  margin: 5px 0;
+}
+
+/* line 38, ../sass/_base.scss */
+input[type="text"],
+input[type="password"] {
+  line-height: 1em;
+  height: 16px;
+  background-color: #cdcdcd;
+  color: rgba(24, 24, 24, 0.75);
+  border: 2px solid rgba(205, 205, 205, 0.25);
+  padding: 2px;
+  margin: 0;
+  vertical-align: middle;
+  -webkit-border-radius: 0 2px 2px 2px;
+  -moz-border-radius: 0 2px 2px 2px;
+  -ms-border-radius: 0 2px 2px 2px;
+  -o-border-radius: 0 2px 2px 2px;
+  border-radius: 0 2px 2px 2px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 52, ../sass/_base.scss */
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #eaeaea;
+  border: 2px solid rgba(64, 64, 64, 0.75);
+  outline: none;
+}
+
+/* line 58, ../sass/_base.scss */
+select {
+  -webkit-appearance: push-button;
+  -moz-appearance: push-button;
+  font-size: 0.8em;
+  line-height: 1.5em;
+  color: #cdcdcd;
+  background-color: gray;
+  padding: 4px 10px;
+  margin: 0;
+  vertical-align: middle;
+  -webkit-border-radius: 0 2px 2px 2px;
+  -moz-border-radius: 0 2px 2px 2px;
+  -ms-border-radius: 0 2px 2px 2px;
+  -o-border-radius: 0 2px 2px 2px;
+  border-radius: 0 2px 2px 2px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 72, ../sass/_base.scss */
+ul, ol {
+  padding: 0;
+}
+
+/*
+ *=============
+ * Base Classes
+ *=============
+ */
+/* line 82, ../sass/_base.scss */
+.container {
+  position: relative;
+  height: 100%;
+  width: 95%;
+  margin: 0 auto;
+}
+
+/* line 89, ../sass/_base.scss */
+.container-spacer {
+  position: relative;
+  top: 0;
+  height: 40px;
+  width: 100%;
+}
+
+/* line 96, ../sass/_base.scss */
+.sw-button {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  padding: 2px 8px;
+  font-size: 0.75em;
+  line-height: 1.5em;
+  font-weight: normal;
+  background-color: #303030;
+  border: 1px solid rgba(234, 234, 234, 0.1);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* line 109, ../sass/_base.scss */
+.sw-button:hover {
+  background-color: #404040;
+  border: 1px solid rgba(24, 24, 24, 0.1);
+}
+
+/*
+ *=================
+ * Menu Bar Classes
+ *=================
+ */
+/* line 120, ../sass/_base.scss */
+.menubar {
+  background-color: #181818;
+  border-bottom: 1px solid rgba(234, 234, 234, 0.25);
+  height: 25px;
+  width: 100%;
+  padding-right: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+/* line 131, ../sass/_base.scss */
+.menubar h4 {
+  margin-top: 2px;
+  display: inline-block;
+}
+
+/* line 137, ../sass/_base.scss */
+.menubar-button {
+  display: inline-block;
+  cursor: pointer;
+  height: 100%;
+  padding: 0 5px;
+  font-size: 0.8em;
+  line-height: 2em;
+  border-right: 1px groove rgba(234, 234, 234, 0.1);
+  border-left: 1px groove rgba(234, 234, 234, 0.1);
+}
+
+/* line 148, ../sass/_base.scss */
+.menubar-button:hover {
+  background-color: #303030;
+}
+
+/* line 152, ../sass/_base.scss */
+.user-menu {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  padding-right: 30px;
+}
+
+/* line 161, ../sass/_base.scss */
+.sw-app-label {
+  display: inline-block;
+}
+/* line 163, ../sass/_base.scss */
+.sw-app-label h4 {
+  margin-left: 10px;
+}
+
+/* line 168, ../sass/_base.scss */
+.sw-version {
+  display: inline-block;
+  margin: 2px 0 5px 5px;
+  font-size: 0.65em;
+}
+
+/*
+ *======================
+ * Dropdown Menu Classes
+ *======================
+ */
+/* line 180, ../sass/_base.scss */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* line 185, ../sass/_base.scss */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 4999;
+  display: none;
+  float: left;
+  min-width: 130px;
+  padding: 5px 0;
+  list-style: none;
+  color: gray;
+  background-color: gray;
+  box-shadow: 0 0 2px black;
+  -webkit-border-radius: 0 2px 2px 2px;
+  -moz-border-radius: 0 2px 2px 2px;
+  -ms-border-radius: 0 2px 2px 2px;
+  -o-border-radius: 0 2px 2px 2px;
+  border-radius: 0 2px 2px 2px;
+  -webkit-margin-before: 5px;
+}
+/* line 200, ../sass/_base.scss */
+.dropdown-menu li {
+  width: 100%;
+  margin-bottom: 1px;
+  cursor: pointer;
+}
+/* line 204, ../sass/_base.scss */
+.dropdown-menu li span {
+  line-height: 1.5em;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+/* line 210, ../sass/_base.scss */
+.dropdown-menu li:hover {
+  background-color: #404040;
+}
+
+/* line 215, ../sass/_base.scss */
+.dropdown-menu:before {
+  content: '';
+  display: inline-block;
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  border-bottom: 7px solid rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: -7px;
+  left: 7px;
+}
+
+/* line 226, ../sass/_base.scss */
+.dropdown-menu:after {
+  content: '';
+  display: inline-block;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+  border-bottom: 6px solid gray;
+  position: absolute;
+  top: -6px;
+  left: 8px;
+}
+
+/* line 237, ../sass/_base.scss */
+.menu-left {
+  right: 0;
+  left: auto;
+  -webkit-border-radius: 2px 0 2px 2px;
+  -moz-border-radius: 2px 0 2px 2px;
+  -ms-border-radius: 2px 0 2px 2px;
+  -o-border-radius: 2px 0 2px 2px;
+  border-radius: 2px 0 2px 2px;
+}
+/* line 242, ../sass/_base.scss */
+.menu-left li span {
+  margin-right: 8px;
+}
+
+/* line 248, ../sass/_base.scss */
+.menu-left:before {
+  right: 6px;
+  left: auto;
+}
+
+/* line 253, ../sass/_base.scss */
+.menu-left:after {
+  right: 7px;
+  left: auto;
+}
+
+/* line 258, ../sass/_base.scss */
+.open > .dropdown-menu {
+  display: block;
+}
+
+@font-face {
+  font-family: 'ElegantIcons';
+  src: url("../fonts/ElegantIcons.eot");
+  src: url("../fonts/ElegantIcons.eot?#iefix") format("embedded-opentype"), url("../fonts/ElegantIcons.woff") format("woff"), url("./fonts/ElegantIcons.ttf") format("truetype"), url("./fonts/ElegantIcons.svg#ElegantIcons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* line 12, ../sass/_fonts.scss */
+.elegant-icons {
+  display: inline-block;
+  font-family: 'ElegantIcons';
+  font-size: 0.9em;
+}
+
+/* line 18, ../sass/_fonts.scss */
+.icon-profile:before {
+  content: "\e08a";
+}
