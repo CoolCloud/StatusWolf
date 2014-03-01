@@ -1,10 +1,31 @@
 {
     "debug": "true",
-    "db": {
-        "driver": "mysql",
+    "db_options": {
+        "driver": "pdo_mysql",
         "host": "localhost",
-        "database": "statuswolf",
-        "username": "statuswolf",
+        "dbname": "statuswolf",
+        "user": "statuswolf",
         "password": "statuswolf"
+    },
+    "auth_config": {
+        "with_csrf": true,
+        "users": {
+            "autocreate": true,
+            "default_auth_type": "ldap",
+            "default_role": "ROLE_USER"
+        },
+        "ldap_options": {
+            "url": "ldaps://ldap.dev.box.net",
+            "binddn": "cn=nagios,ou=Services,dc=ops,dc=box,dc=net",
+            "bindpw": "8CO7Tckp",
+            "basedn": "ou=Employees,dc=ops,dc=box,dc=net",
+            "userattr": "uid",
+            "name_key": "cn"
+        }
+    },
+    "logging": {
+        "level": "INFO",
+        "autorotate": true,
+        "keep": 7
     }
 }
