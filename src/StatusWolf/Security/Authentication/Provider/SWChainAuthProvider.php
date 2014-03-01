@@ -1,8 +1,6 @@
 <?php
 /**
- * LdapProvider
- *
- * Describe your class here
+ * This file is part of the StatusWolf package
  *
  * Author: Mark Troyer <disco@box.com>
  * Date Created: 28 February 2014
@@ -11,8 +9,8 @@
 
 namespace StatusWolf\Security\Authentication\Provider;
 
+use Silex\Provider\MonologServiceProvider;
 use StatusWolf\Security\Authentication\Token\SWChainAuthToken;
-use StatusWolf\Security\User\SWUser;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -22,6 +20,14 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * Class SWChainAuthProvider
+ *
+ * Retrieves a user from the User Provider and attempts to authenticate them.
+ *
+ * @package StatusWolf\Security\Authentication\Provider
+ */
+
 class SWChainAuthProvider implements AuthenticationProviderInterface {
 
     private $_encoder_factory;
@@ -30,12 +36,22 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
     private $_auth_config;
     private $_hide_user_not_found_exceptions;
 
+    /**
+     * Constructor
+     *
+     * @param   UserProviderInterface   $user_provider                  The User Provider
+     * @param   string                  $provider_key                   A provider key
+     * @param   EncoderFactoryInterface $encoder_factory                Password encoder
+     * @param   bool                    $hide_user_not_found_exceptions Whether to hide user not found exception
+     * @param   MonologServiceProvider  $logger                         Application logging provider
+     * @param   array                   $auth_config                    Authentication config info
+     */
     public function __construct(
             UserProviderInterface $user_provider,
             $provider_key,
             EncoderFactoryInterface $encoder_factory,
             $hide_user_not_found_exceptions = true,
-            $logger,
+            MonologServiceProvider $logger,
             array $auth_config = array()
         ) {
 
@@ -56,12 +72,19 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
             return null;
         }
 
-        if (!$user = $this->_user_provider->loadUserByUsername($token->getUsername())) {
-            throw new AuthenticationException('Piss off, imposter');
+        $username = $token->getUsername();
+        if (empty($username)) {
+            $username = 'NONE_PROVIDED';
         }
 
-        if (!$this->correctUserClass($user)) {
-            throw new AuthenticationException(sprintf("Incorrect user type: %s, expected %s", get_class($user), 'SWUser'));
+        try {
+            $user = $this->retrieveUser($username, $token);
+        } catch (UsernameNotFoundException $not_found) {
+            if ($this->_hide_user_not_found_exceptions) {
+                throw new BadCredentialsException('Login failed', 0, $not_found);
+            }
+            $not_found->setUsername($username);
+            throw $not_found;
         }
 
         $this->_logger->addInfo('Attempting to authenticate user ' . $user->getUsername() . ' to ' . $user->getAuthSource());
@@ -86,10 +109,6 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
      */
     public function supports(TokenInterface $token) {
         return $token instanceof SWChainAuthToken;
-    }
-
-    public function correctUserClass(UserInterface $user) {
-        return $user instanceof SWUser;
     }
 
     /**
@@ -135,7 +154,6 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
             if (!$user instanceof UserInterface) {
                 throw new AuthenticationException('The provided user must be a UserInterface object');
             }
-
             return $user;
         } catch (UsernameNotFoundException $not_found) {
             $not_found->setUsername($username);
