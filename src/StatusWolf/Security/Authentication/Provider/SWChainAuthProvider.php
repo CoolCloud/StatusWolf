@@ -9,12 +9,13 @@
 
 namespace StatusWolf\Security\Authentication\Provider;
 
-use Silex\Provider\MonologServiceProvider;
+use Monolog\Logger;
 use StatusWolf\Security\Authentication\Token\SWChainAuthToken;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\AuthenticationServiceException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,7 +52,7 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
             $provider_key,
             EncoderFactoryInterface $encoder_factory,
             $hide_user_not_found_exceptions = true,
-            MonologServiceProvider $logger,
+            Logger $logger,
             array $auth_config = array()
         ) {
 
@@ -96,12 +97,15 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
                 throw new BadCredentialsException('Login failed', 0, $e);
             }
             throw $e;
+        } catch (AuthenticationException $ae) {
+            throw $ae;
         }
 
         $authenticated_token = new SWChainAuthToken($user, $token->getCredentials(), $this->_provider_key, $user->getRoles());
         $authenticated_token->setAttributes($token->getAttributes());
 
         return $authenticated_token;
+
     }
 
     /**
@@ -137,6 +141,8 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
             } catch (AuthenticationException $e) {
                 throw $e;
             }
+        } else {
+            throw new AuthenticationServiceException(sprintf("Authentication method %s is not supported", $auth_source));
         }
     }
 
@@ -166,19 +172,44 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
     }
 
     private function _ldap_bind($username, $password) {
-        if ($ldap_server= ldap_connect($this->_server, $this->_port)) {
-            try {
-                if (ldap_bind($ldap_server, $this->_domain . '\\' . $username, $password)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (ContextErrorException $e) {
-                throw new AuthenticationException('Unable to bind to LDAP server: ' . $e->getMessage());
-            }
-        } else {
+        $ldap_server= ldap_connect($this->_auth_config['ldap_options']['url']);
+        $this->_logger->addDebug('LDAP server connection status: ' . $ldap_server);
+        if ($ldap_server === FALSE) {
             throw new AuthenticationException('Connection to LDAP server failed');
         }
+        $ldap_bind_status = ldap_bind($ldap_server, $this->_auth_config['ldap_options']['binddn'], $this->_auth_config['ldap_options']['bindpw']);
+        $this->_logger->addDebug('LDAP bind status: ' . $ldap_bind_status);
+        if ($ldap_bind_status === FALSE) {
+            throw new AuthenticationServiceException('Unable to bind to LDAP server');
+        }
+        $ldap_search_base = $this->_auth_config['ldap_options']['basedn'];
+        $ldap_query = '(&(' . $this->_auth_config['ldap_options']['userattr'] . '=' . $username . '))';
+        $ldap_search = ldap_search($ldap_server, $ldap_search_base, $ldap_query, array('dn'));
+        $this->_logger->addDebug('LDAP search status: ' . $ldap_search);
+        if ($ldap_search === FALSE) {
+            throw new BadCredentialsException(sprintf("LDAP search for user %s failed", $username));
+        }
+        $ldap_search_result = ldap_get_entries($ldap_server, $ldap_search);
+        $this->_logger->addDebug('LDAP search result: ' . $ldap_search_result);
+        if ($ldap_search_result === FALSE) {
+            throw new BadCredentialsException(sprintf("LDAP search for user %s failed", $username));
+        }
+
+        if ((int) $ldap_search_result['count'] > 0) {
+            $userdn = $ldap_search_result[0]['dn'];
+            $this->_logger->addDebug('LDAP search for ' . $username . ' returned: ' . $userdn);
+            if (trim((string) $userdn === '')) {
+                throw new BadCredentialsException(sprintf("LDAP search for %s returned empty result", $username));
+            }
+        } else {
+            throw new BadCredentialsException(sprintf("LDAP search for %s returned 0 results", $username));
+        }
+
+        $auth_status = ldap_bind($ldap_server, $userdn, $password);
+        if ($auth_status === FALSE) {
+            throw new BadCredentialsException(sprintf("LDAP login for user %s failed", $username));
+        }
+
     }
 
 }
