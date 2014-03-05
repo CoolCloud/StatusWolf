@@ -36,6 +36,7 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
     private $_logger;
     private $_auth_config;
     private $_hide_user_not_found_exceptions;
+    private $_ldap_full_name;
 
     /**
      * Constructor
@@ -44,7 +45,7 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
      * @param   string                  $provider_key                   A provider key
      * @param   EncoderFactoryInterface $encoder_factory                Password encoder
      * @param   bool                    $hide_user_not_found_exceptions Whether to hide user not found exception
-     * @param   MonologServiceProvider  $logger                         Application logging provider
+     * @param   Logger                  $logger                         Application logging provider
      * @param   array                   $auth_config                    Authentication config info
      */
     public function __construct(
@@ -138,6 +139,8 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
         } elseif ($auth_source === "ldap") {
             try {
                 $this->_ldap_bind($user->getUsername(), $token->getCredentials());
+                $this->_logger->addDebug('Setting user full name to ' . $this->_ldap_full_name);
+                $user->setFullName($this->_ldap_full_name);
             } catch (AuthenticationException $e) {
                 throw $e;
             }
@@ -184,20 +187,21 @@ class SWChainAuthProvider implements AuthenticationProviderInterface {
         }
         $ldap_search_base = $this->_auth_config['ldap_options']['basedn'];
         $ldap_query = '(&(' . $this->_auth_config['ldap_options']['userattr'] . '=' . $username . '))';
-        $ldap_search = ldap_search($ldap_server, $ldap_search_base, $ldap_query, array('dn'));
+        $ldap_search = ldap_search($ldap_server, $ldap_search_base, $ldap_query, array('dn', $this->_auth_config['ldap_options']['name_key']));
         $this->_logger->addDebug('LDAP search status: ' . $ldap_search);
         if ($ldap_search === FALSE) {
             throw new BadCredentialsException(sprintf("LDAP search for user %s failed", $username));
         }
         $ldap_search_result = ldap_get_entries($ldap_server, $ldap_search);
-        $this->_logger->addDebug('LDAP search result: ' . $ldap_search_result);
         if ($ldap_search_result === FALSE) {
             throw new BadCredentialsException(sprintf("LDAP search for user %s failed", $username));
         }
 
         if ((int) $ldap_search_result['count'] > 0) {
             $userdn = $ldap_search_result[0]['dn'];
+            $this->_logger->addDebug(json_encode($ldap_search_result[0]));
             $this->_logger->addDebug('LDAP search for ' . $username . ' returned: ' . $userdn);
+            $this->_ldap_full_name = $ldap_search_result[0][$this->_auth_config['ldap_options']['name_key']][0];
             if (trim((string) $userdn === '')) {
                 throw new BadCredentialsException(sprintf("LDAP search for %s returned empty result", $username));
             }
