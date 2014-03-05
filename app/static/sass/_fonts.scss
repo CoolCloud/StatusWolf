@@ -15,6 +15,26 @@
     font-size: 0.9em;
 }
 
+.arrow-triangle-down:before {
+    content: "\43";
+}
+
+.arrow-triangle-right:before {
+    content: "\45";
+}
+
+.icon-close:before {
+    content: "\4d";
+}
+
+.icon-close-alt:before {
+    content: "\e051";
+}
+
+.icon-cog:before {
+    content: "\e037";
+}
+
 .icon-profile:before {
     content: "\e08a";
 }
