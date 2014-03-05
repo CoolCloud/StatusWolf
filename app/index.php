@@ -7,6 +7,7 @@
  * Date Create: 27 February 2014
  */
 
+require_once __DIR__ . '/static/constants/Constants.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +56,16 @@ $sw->register(new Silex\Provider\SecurityServiceProvider(), array(
 // Twig provider for templating, uses the URL Generator
 $sw->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $sw->register(new Silex\Provider\TwigServiceProvider(), array(
-	'twig.path' => __DIR__ . '/views',
+	'twig.path' => __DIR__ . '/templates',
 ));
 
 // Database access provider
 $sw->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => $sw['db_options'],
 ));
+
+// Controller service provider
+$sw->register(new \Silex\Provider\ServiceControllerServiceProvider());
 
 // Add the User provider to the list
 $sw['security.providers'] = array(
@@ -135,10 +139,8 @@ $sw['security.authentication_listener.factory.swchainauth'] = $sw->protect(funct
 
 // Routes
 $sw->get('/', function() use ($sw) {
-    $user_token = $sw['security']->getToken();
-    $user = $user_token->getUser();
-    return $user instanceof \StatusWolf\Security\User\SWUser ? $user->getUsername() : $user;
-});
+    return $sw->redirect('/dashboard');
+})->bind('home');
 
 // The login form, uses tokens to guard against CSRF attacks
 $sw->get('/login', function(Request $request) use($sw) {
@@ -149,10 +151,37 @@ $sw->get('/login', function(Request $request) use($sw) {
         'csrf_token' => $sw['form.csrf_provider']->generateCsrfToken('authenticate'),
         'extra_css' => array('login.css',),
 	));
-});
+})->bind('login');
 
 // Fake route for validating authentication
 $sw->match('/login_check', null)->bind('login_check');
+
+$sw->mount('/dashboard', new \StatusWolf\Controllers\DashboardController());
+
+$sw->mount('/api', new \StatusWolf\Controllers\ApiController());
+
+function get_widgets() {
+    $widget_main = WIDGETS;
+    $widget_iterator = new \DirectoryIterator($widget_main);
+    $widgets = array();
+    $widget_list = array();
+
+    foreach ($widget_iterator as $fileinfo) {
+        if ($fileinfo->isDot()) { continue; }
+        if ($fileinfo->isDir()) {
+            $widgets[] = $fileinfo->getFilename();
+        }
+    }
+
+    foreach ($widgets as $widget_key) {
+        $widget_info = file_get_contents($widget_main . DS . $widget_key . DS . $widget_key . '.json');
+        $widget_info = implode('', explode("\n", $widget_info));
+        $widget_list[$widget_key] = json_decode($widget_info, true);
+    }
+
+    return $widget_list;
+
+}
 
 // Go!
 $sw->run();
