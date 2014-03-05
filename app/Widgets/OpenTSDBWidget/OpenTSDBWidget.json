@@ -1,8 +1,8 @@
 {
-	"name": "sw.graphwidget"
-	,"title": "Graphing Widget"
-	,"description": "Widget for displaying graphs from various data sources"
-	,"version": "1.0"
+	"name": "sw.opentsdbwidget"
+	,"title": "OpenTSDB Widget"
+	,"description": "Widget for displaying graphs for OpenTSDB Data"
+	,"version": "1.1"
 	,"author": {
 		"name": "StatusWolf Project"
 		,"url": "http://wwww.statuswolf.com/"
