@@ -1,0 +1,41 @@
+{% include 'header.twig' %}
+{% include 'navbar.twig' %}
+
+    <div class="container">
+      <div class="container-spacer"></div>
+      <div id="dashboard-container" class="dashboard-container"></div>
+    </div>
+
+    <div id="save-dashboard-popup" class="popup mfp-hide">
+      <div id="save-dashboard-form">
+        <form onsubmit="return false">
+          <h5 style="display: inline-block;">Title: </h5>
+          <div class="popup-form-data">
+            <input type="text" class="input" id="save-dashboard-title" name="dashboard-title">
+          </div>
+          <div class="sw-button push-button" id="shared-dashboard-button">
+            <input type="checkbox" id="shared-dashboard" name="shared-dashboard"><label for="shared-dashboard"><span class="elegant-icons icon-close-alt red"></span><span class="button-label"> Shared Dashboard</span></label>
+          </div>
+          <div class="save-dashboard-form-buttons">
+            <div class="sw-button" id="save-dashboard-cancel-button" onclick="$.magnificPopup.close()"><span>Cancel</span></div>
+            <div class="sw-button" id="save-dashboard-button" onclick="save_click_handler(event, 0)"><span>Save</span></div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if extra_js %}
+      {% for js in extra_js %}
+        <script type="text/javascript" src="{{ url('home') }}static/js/{{ js }}"></script>
+      {% endfor %}
+    {% endif %}
+
+    {% if widgets %}
+      {% for key, widget in widgets %}
+        <script type="text/javascript" src="{{ url('home')}}Widgets/{{ key }}/js/{{ widget.name }}.js"></script>
+      {% endfor %}
+    {% endif %}
+
+    {% include 'dashboard_js.twig'|raw %}
+
+    {% include 'footer.twig' %}

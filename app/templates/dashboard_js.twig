@@ -1,0 +1,293 @@
+{% autoescape 'js' %}
+
+<script type="text/javascript">
+    $('title').text('Dashboard - StatusWolf');
+    $('div#dashboard-title').remove();
+
+    var dashboard_id = false;
+    document._session = {};
+    document._session.dashboard_username = '{{ username }}';
+    document._session.dashboard_userid = '{{ user_id }}';
+    document._session.dashboard_columns = '{{ app.session.get('columns') ?: '2' }}';
+
+    {% if dashboard_id %}
+        dashboard_id = '{{ dashboard_id }}';
+    {% endif %}
+
+    if (dashboard_id) {
+        console.log('Loading dashboard ' + dashboard_id);
+        $.when(get_dashboard_config(dashboard_id)).then(
+            function(data) {
+                build_dashboard(data);
+            }
+        )
+    }
+
+    $('document').ready(function() {
+        var widgets = eval({{ widgets_json|raw }});
+
+        $('#menu-placeholder').replaceWith({% include 'dashboard_menu.twig' %});
+        $.each(widgets, function(widget_index, widget_data) {
+            var widget_type = widget_data.name.split('.');
+            $('#add-widget-menu-options').append('<li onclick="add_widget(\'' + widget_type[1] + '\')"><span>' + widget_data.title + '</span></li>');
+        });
+
+        $('#dashboard-menu').after('<div class="dashboard-columns menubar-button info-tooltip" id="three-cols" title="Set 3-Column Layout" data-columns="3"><span class="menu-label">III</span></div>');
+        $('#three-cols').css('right', $('#login-button').outerWidth());
+        $('#dashboard-menu').after('<div class="dashboard-columns menubar-button info-tooltip" id="two-cols" title="Set 2-Column Layout" data-columns="2"><span class="menu-label">II</span></div>');
+        $('#two-cols').css('right', $('#login-button').outerWidth() + $('#three-cols').outerWidth());
+        $('#dashboard-menu').after('<div class="dashboard-columns menubar-button info-tooltip" id="one-col" title="Set 1-Column Layout" data-columns="1"><span class="menu-label">I</span></div>');
+        $('#one-col').css('right', $('#login-button').outerWidth() + $('#three-cols').outerWidth() + $('#two-cols').outerWidth());
+        console.log('setting columns for dashboard to ' + document._session.dashboard_columns);
+        dashboard_column_toggle($('.dashboard-columns[data-columns="' + document._session.dashboard_columns + '"]'));
+
+        $('.dashboard-columns.info-tooltip').tooltip({placement: 'bottom', delay: {show: 500, hide: 100}});
+
+        $('.dashboard-columns').click(function() {
+            dashboard_column_toggle(this)
+        });
+
+        $.when(build_dashboard_list()).then(
+            function(data) {
+                if (data[1] > data[0])
+                {
+                    $('#load-dashboard-menu-options').append('<li id="full-dashboard-list"><span>More...</span></li>');
+                }
+            }
+        );
+
+        $('#dashboard-menu').on('click', 'li#full-dashboard-list', function() {
+            $.magnificPopup.open({
+                items: {
+                    src: '#dashboard-list-popup',
+                    type: 'inline'
+                },
+                preloader: false,
+                removalDelay: 300,
+                mainClass: 'popup-animate',
+                callbacks: {
+                    open: function() {
+                        setTimeout(function() {
+                            $('.container').addClass('blur');
+                            $('.menubar').addClass('blur');
+                        }, 150);
+                    },
+                    close: function() {
+                        $('.container').removeClass('blur');
+                        $('.menubar').removeClass('blur');
+                    }
+                }
+            })
+        });
+
+        $('#save-dashboard-menu-choice').magnificPopup({
+            items: {
+                src: '#save-dashboard-popup',
+                type: 'inline'
+            },
+            preloader: false,
+            focus: '#save-dashboard-title',
+            removalDelay: 300,
+            mainClass: 'popup-animate',
+            callbacks: {
+                open: function() {
+                    setTimeout(function() {
+                        $('.container').addClass('blur');
+                        $('menubar').addClass('blur');
+                    }, 150);
+                },
+                close: function() {
+                    $('.container').removeClass('blur');
+                    $('.menubar').removeClass('blur');
+                }
+            }
+        });
+    });
+
+    function dashboard_column_toggle(button) {
+        if (!$(button).hasClass('pushed')) {
+            $(button).toggleClass('pushed');
+            $(button).siblings('.dashboard-columns').removeClass('pushed');
+            var new_columns = $(button).attr('data-columns');
+            console.log('current columns: ' + document._session.dashboard_columns + ', new columns: ' + new_columns);
+            if (new_columns !== document._session.dashboard_columns) {
+                var session_data = {session_data_key: 'columns', session_data_value: new_columns};
+                document._session.dashboard_columns = new_columns;
+                console.log('Set dashboard_columns in _session to ' + new_columns);
+                $.ajax({
+                    url: "{{ url('home') }}api/session/",
+                    type: 'PUT',
+                    data: session_data,
+                    dataType: 'json',
+                    done: function(data) {}
+                });
+                if ($('.widget-container').length > 0) {
+                    $.each($('.widget-container'), function(i, widget) {
+                        $('.widget-container')
+                            .removeClass('cols-1')
+                            .removeClass('cols-2')
+                            .removeClass('cols-3')
+                            .addClass('cols-' + document._session.dashboard_columns);
+                    });
+                }
+            }
+        }
+    }
+
+    function add_widget(widget_type) {
+        var widget_id = 'widget' + md5(document._session.dashboard_username + new Date.now().getTime());
+        var widget;
+
+        $('#dashboard-container').append('<div class="widget-container cols-' + document._session.dashboard_columns + '" id="' + widget_id + '" data-widget-type="' + widget_type + '">')
+        var widget_div = $('#' + widget_id)[widget_type]();
+        var widget_object = $(widget_div).data('sw-' + widget_type);
+//        setTimeout(function() {
+//            widget_object.edit_params();
+//        }, 250);
+        setTimeout(function() {
+            $(widget_div).removeClass('transparent');
+        }, 100);
+    }
+
+    function build_dashboard_list() {
+        var api_url = '{{ url('home') }}api/dashboard/saved/' + document._session.dashboard_userid;
+        var menu_length = 15;
+        var item_length = 0;
+
+        dashboard_menu = new $.Deferred();
+
+        dashboard_list_query = $.ajax({
+            url: api_url,
+            type: 'GET',
+            dataType: 'json'
+        }),
+        chain = dashboard_list_query.then(function(data) {
+            return(data);
+        });
+
+        chain.done(function(data) {
+            console.log(data);
+            var my_dashboards = data['user_dashboards'];
+            var shared_dashboards = data['shared_dashboards'];
+            $('#load-dashboard-menu-options').empty();
+            $('#load-dashboard-menu-options').append('<li class="menu-section"><span>My Dashboards</span></li>');
+            if (my_dashboards.length > 0) {
+                var max = (my_dashboards.length < menu_length ? my_dashboards.length : menu_length);
+                for (i = 0; i < max; i++) {
+                    $('#load-dashboard-menu-options').append('<li><span><a href="{{ url('home') }}dashboard/' + my_dashboards[i]['id'] + '">' + my_dashboards[i]['title'] + '</span></li>');
+                    menu_length--;
+                }
+                $.each(my_dashboards, function(i, dashboard) {
+                    $('table#my-dashboard-list-table').append('<tr class="dashboard-item"><td><a href="{{ url('home') }}dashboard/' + dashboard.id + '">"' + dashboard.title + '</a></td></tr>');
+                });
+            }
+
+            if (menu_length > 0 && shared_dashboards.length > 0) {
+                $('#load-dashboard-menu-options').append('<li class="divider">');
+                $('#load-dashboard-menu-options').append('<li class="menu-section"><span>Shared Dashboards</span></li>');
+                var max = (shared_dashboards.length < menu_length ? shared_dashboards.length : menu_length);
+                for (i = 0; i < max; i++) {
+                    if (shared_dashboards[i]['user_id'] === {{ user_id }}) {
+                        $('#load-dashboard-menu-options').children('li.menu-section:last').after('<li><span><a href="{{ url('home') }}dashboard/' + shared_dashboards[i]['id'] + '">' + shared_dashboards[i]['title'] + ' (' + shared_dashboards[i]['username'] + ')</a></span></li>');
+                    } else {
+                        $('#load-dashboard-menu-options').append('<li><span><a href="{{ url('home') }}dashboard/' + shared_dashboards[i]['id'] + '">' + shared_dashboards[i]['title'] + ' (' + shared_dashboards[i]['username'] + ')</a></span></li>');
+                    }
+                    menu_length--;
+                }
+                $.each(shared_dashboards, function(i, shared) {
+                    if (shared.user_id === {{ user_id }}) {
+                        $('table#shared-dashboard-list-table').children('tbody').children('tr.header-row').after('<tr class="dashboard-item"><td><a href="{{ url('home') }}dashboard/' + shared.id + '">' + shared.title + '</a></td><td>' + shared.username + '</td></tr>');
+                    } else {
+                        $('table#shared-dashboard-list-table').append('<tr class="dashboard-item"><td><a href="{{ url('home') }}dashboard/' + shared.id + '">' + shared.title + '</a></td><td>' + shared.username + '</td></tr>');
+                    }
+                });
+            }
+            var my_dash_count = typeof(my_dashboards !== "undefined" ? my_dashboards.length : 0);
+            var shared_dash_count = typeof(shared_dashboards !== "undefined" ? shared_dashboards.length : 0);
+            item_length = my_dash_count + shared_dash_count;
+
+            dashboard_menu.resolve([menu_length, item_length]);
+        });
+
+        return dashboard_menu.promise();
+    }
+
+    function get_dashboard_config(dashboard_id) {
+        var api_url = "{{ url('home') }}api/dashboard/config/" + dashboard_id;
+
+        var dashboard_config = new $.Deferred();
+        var dashboard_config_query = $.ajax({
+            url: api_url,
+            type: 'GET',
+            dataType: 'json'
+        }),
+        chain = dashboard_config_query.then(function(data) {
+            return(data);
+        });
+
+        chain.done(function(data) {
+            dashboard_config.resolve(data);
+        });
+
+        return dashboard_config.promise();
+    }
+
+    function build_dashboard(dashboard_config) {
+        if (typeof dashboard_config.error !== "undefined") {
+            if (dashboard_config.error === "Not Allowed") {
+                $('.container').append('<div id="not-allowed-popup" class="popup"><h5>Not Allowed</h5><div class="popup-form-data">You do not have permission to view this dashboard</div></div>');
+                $.magnificPopup.open({
+                    items: {
+                        src: '#not-allowed-popup',
+                        type: 'inline'
+                    },
+                    preloader: false,
+                    removalDelay: 300,
+                    mainClass: 'popup-animate',
+                    callbacks: {
+                        open: function() {
+                            $('.menubar').addClass('blur');
+                            $('.container').addClass('blur');
+                        },
+                        close: function() {
+                            $('.menubar').removeClass('blur');
+                            $('.container').removeClass('blur');
+                            window.history.pushState("", "StatusWolf", "/dashboard");
+                        },
+                        afterClose: function() {
+                            $('#not-allowed-popup').remove();
+                        }
+                    }
+                });
+            } else if (dashboard_config.error === "Not Found") {
+                $('.container').append('<div id="not-found-popup" class="popup"><h5>Not Found</h5><div class="popup-form-data">The dashboard was not found</div></div>');
+                $.magnificPopup.open({
+                    items: {
+                        src: '#not-found-popup',
+                        type: 'inline'
+                    },
+                    preloader: false,
+                    removalDelay: 300,
+                    mainClass: 'popup-animate',
+                    callbacks: {
+                        open: function() {
+                            $('.menubar').addClass('blur');
+                            $('.container').addClass('blur');
+                        },
+                        close: function() {
+                            $('.menubar').removeClass('blur');
+                            $('.container').removeClass('blur');
+                            window.history.pushState("", "StatusWolf", "/dashboard");
+                        },
+                        afterClose: function() {
+                            $('#not-found-popup').remove();
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+</script>
+
+{% endautoescape %}
