@@ -30,7 +30,7 @@
 
 /* line 28, ../sass/login.scss */
 .login-container {
-  min-height: 175px;
+  height: 175px;
   width: 300px;
   position: relative;
   margin: 10% auto;
