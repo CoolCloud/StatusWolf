@@ -68,8 +68,18 @@ class SWUserProvider implements UserProviderInterface {
                 sprintf("Unsupported user class: %s", $user_class)
             );
         }
+        if ($user->getAuthSource() === "ldap") {
+            $full_name = $user->getFullName();
+        } else {
+            $full_name = false;
+        }
 
-        return $this->loadUserByUsername($user->getUsername());
+        $reload_user = $this->loadUserByUsername($user->getUsername());
+        if ($full_name) {
+            $reload_user->setFullName($full_name);
+        }
+
+        return $reload_user;
     }
 
     public function supportsClass($class) {
