@@ -13,5 +13,11 @@
 			,"email": "disco@box.com"
 		}
 	]
-	,"license": "Apache v2.0"
+	,"license": "Apache v2.0",
+    "enabled": true,
+    "dependencies": {
+        "js": [
+            "bootstrap-datetimepicker.js"
+        ]
+    }
 }
