@@ -25,11 +25,25 @@
 
     $('document').ready(function() {
         var widgets = eval({{ widgets_json|raw }});
+        console.log(widgets);
 
         $('#menu-placeholder').replaceWith({% include 'dashboard_menu.twig' %});
         $.each(widgets, function(widget_index, widget_data) {
             var widget_type = widget_data.name.split('.');
             $('#add-widget-menu-options').append('<li onclick="add_widget(\'' + widget_type[1] + '\')"><span>' + widget_data.title + '</span></li>');
+            console.log('Checking widget dependencies');
+            console.log(typeof widget_data.dependencies);
+            if (typeof widget_data.dependencies !== "undefined") {
+                if (typeof widget_data.dependencies.js !== "undefined") {
+                    console.log('loading js dependencies for ' + widget_type[1]);
+                    $.each(widget_data.dependencies.js, function(i, js) {
+                        console.log('loading script ' + js);
+                        if ($('script[src*="' + js + '"]').length === 0) {
+                            loadScript(window.location.origin + '/app/static/js/lib/' + js, function() {});
+                        }
+                    });
+                }
+            }
         });
 
         $('#dashboard-menu').after('<div class="dashboard-columns menubar-button info-tooltip" id="three-cols" title="Set 3-Column Layout" data-columns="3"><span class="menu-label">III</span></div>');
@@ -141,9 +155,6 @@
         $('#dashboard-container').append('<div class="widget-container cols-' + document._session.dashboard_columns + '" id="' + widget_id + '" data-widget-type="' + widget_type + '">')
         var widget_div = $('#' + widget_id)[widget_type]();
         var widget_object = $(widget_div).data('sw-' + widget_type);
-//        setTimeout(function() {
-//            widget_object.edit_params();
-//        }, 250);
         setTimeout(function() {
             $(widget_div).removeClass('transparent');
         }, 100);
