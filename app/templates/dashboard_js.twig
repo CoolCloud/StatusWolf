@@ -285,6 +285,30 @@
                     }
                 });
             }
+        } else {
+            console.log(dashboard_config);
+            if (typeof dashboard_config.columns !== "undefined" && dashboard_config.columns !== null) {
+                if (dashboard_config.columns !== document._session.dashboard_columns) {
+                    var button = $('.dashboard-columns[data-columns="' + dashboard_config.columns + '"]');
+                    dashboard_column_toggle(button);
+                }
+            }
+
+            var cols = document._session.dashboard_columns;
+
+            $('title').text(dashboard_config.title + ' - StatusWolf');
+            $('input#save-dashboard-title').val(dashboard_config.title);
+
+            $.each(dashboard_config.widgets, function(widget_id, query_data) {
+                console.log('adding widget ' + widget_id);
+                console.log(query_data.widget_type);
+                $('#dashboard-container').append('<div class="widget-container cols-' + document._session.dashboard_columns + '" id="' + widget_id + '" data-widget-type="' + query_data.widget_type + '">')
+                var new_widget = $('div#' + widget_id)[query_data['widget_type']](query_data.options, { query_data: query_data });
+                var widget_object = $(new_widget).data('sw-' + query_data.widget_type);
+                setTimeout(function() {
+                    $(new_widget).removeClass('transparent');
+                }, 100);
+            });
         }
     }
 
