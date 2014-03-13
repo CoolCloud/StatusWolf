@@ -55,6 +55,15 @@ input[type="password"]:focus {
     outline: none;
 }
 
+input.input-append {
+    -webkit-border-radius: 0 0 0 2px;
+    -moz-border-radius: 0 0 0 2px;
+    -ms-border-radius: 0 0 0 2px;
+    -o-border-radius: 0 0 0 2px;
+    border-radius: 0 0 0 2px;
+    vertical-align: top;
+}
+
 select {
     -webkit-appearance: push-button;
     -moz-appearance: push-button;
@@ -84,6 +93,17 @@ ul, ol {
     filter: blur(3px);
 }
 
+.bodyshade {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background-color: $bodyshade_bg;
+    -webkit-transition: opacity 0.25s linear;
+    -moz-transition: opacity 0.25s linear;
+    transition: opacity 0.25s linear;
+}
+
 .container {
     position: relative;
     height: 100%;
@@ -98,12 +118,24 @@ ul, ol {
     width: 100%;
 }
 
+.font-reset {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .green {
     color: darkgreen;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .nodisplay {
     display: none;
+}
+
+.no-overflow {
+    overflow: hidden;
 }
 
 .red {
@@ -143,69 +175,122 @@ ul, ol {
     opacity: 0;
 }
 
+
 /*
- *=================
- * Menu Bar Classes
- *=================
+ *===============
+ * Button Classes
+ *===============
  */
 
-.menubar {
-    background-color: $menubar_bg;
-    border-bottom: 1px solid $menubar_border;
-    height: 25px;
-    width: 100%;
-    padding-right: 10px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-
-    h4 {
-        margin-top: 2px;
-        display: inline-block;
-    }
-}
-
-.menubar-button {
+.input-addon-button {
+    font-size: 10pt;
+    line-height: 14px;
+    vertical-align: top;
+    text-align: center;
+    margin: 0;
     display: inline-block;
+    width: auto;
+    height: 14px;
+    padding: 4px 5px;
+    color: $font_default;
+    background-color: $button_bg;
+    @include sw-button-radius-right;
+    border: 1px solid $button_border;
     cursor: pointer;
-    height: 100%;
-    padding: 0 5px;
-    font-size: 0.8em;
-    line-height: 2em;
-    border-right: 1px groove $menubar_button_border;
-    border-left: 1px groove $menubar_button_border;
 }
 
-.menubar-button:hover {
-    background-color: $menubar_button_hover;
+.input-addon-button:hover {
+    color: $font_bright;
+    background-color: $button_bg_hover;
+    borrder: 1px solid $button_bg_hover;
 }
 
-.menubar-button.pushed {
-    background-color: $menubar_button_pushed;
-}
-
-.login-button {
+.push-button {
     display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 0;
+    margin: 0;
+    padding: 2px;
     height: 100%;
-    padding-right: 30px;
-}
-
-.sw-app-label {
-    display: inline-block;
-    margin-right: 5px;
-    h4 {
-        margin-left: 10px;
+    font-size: 0.75em;
+    line-height: 1.5em;
+    font-weight: normal;
+    background-color: $button_bg;
+    border: 1px solid $button_border;
+    @include sw-button-radius;
+    cursor: pointer;
+    input {
+        position: absolute;
+        top: -20px;
+        display: none;
+    }
+    label {
+        span {
+            padding: 0 10px 0 5px;
+            text-align: center;
+            font-weight: normal;
+            display: inline-block;
+            cursor: pointer;
+        }
     }
 }
 
-.sw-version {
+.push-button:hover {
+    color: $font_bright;
+    background-color: $button_bg_hover;
+}
+
+.push-button.pushed {
+    background-color: $button_bg_pushed;
+    border-top-left-radius: 1px solid $button_border_pushed;
+}
+
+.toggle-button {
     display: inline-block;
-    margin: 2px 0 5px 5px;
-    font-size: 0.65em;
+    margin: 0;
+    padding: 2px;
+    height: 100%;
+    font-size: 0.75em;
+    line-height: 1.5em;
+    font-weight: normal;
+    color: $font_default;
+    background-color: $button_bg;
+    border: 1px solid $button_border;
+    cursor: pointer;
+    label {
+        span {
+            padding: 0 10px;
+            text-align: center;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        input {
+            position: absolute;
+            top: -20px;
+            display: none;
+        }
+    }
+}
+
+.toggle-button:hover {
+    color: $font_bright;
+    background-color: $button_bg_hover;
+    border: 1px solid $button_border_hover;
+}
+
+.toggle-button.toggle-on {
+    background-color: $button_bg_pushed;
+    border: 1px solid $button_border_pushed;
+}
+
+.toggle-button-group {
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    .toggle-button:first-child {
+        @include sw-button-radius-left;
+    }
+    .toggle-button:last-child {
+        @include sw-button-radius-right;
+    }
 }
 
 /*
@@ -327,6 +412,7 @@ ul.sub-menu-item {
         margin-left: -6px;
         -webkit-animation: fadeOut 0.5s;
         animation: fadeOut 0.5s;
+        white-space: nowrap;
     }
     ul.sub-menu:before {
         border-left: 0;
@@ -355,6 +441,159 @@ ul.sub-menu-item {
         }
     }
 }
+
+/*
+ *=======================
+ * Loader Spinner classes
+ *=======================
+ */
+
+.spinner {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+}
+
+.spinner-error {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    font-size: 36px;
+}
+.spinner-holder {
+    @extend .spinner-error;
+    -webkit-animation-name: move-spinner;
+    -moz-animation-name: move-spinner;
+    -ms-animation-name: move-spinner;
+    -o-animation-name: move-spinner;
+    animation-name: move-spinner;
+    -webkit-animation-duration: 2.9s;
+    -moz-animation-duration: 2.9s;
+    -ms-animation-duration: 2.9s;
+    -o-animation-duration: 2.9s;
+    animation-duration: 2.9s;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+    -ms-animation-timing-function: linear;
+    -o-animation-timing-function: linear;
+    animation-timing-function: linear;
+}
+
+@-webkit-keyframes move-spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes move-spinner {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-ms-keyframes move-spinner {
+    0% {
+        -ms-transform: rotate(0deg);
+    }
+    100% {
+        -ms-transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes move-spinner {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        -o-transform: rotate(360deg);
+    }
+}
+
+@keyframes move-spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/*
+ *=================
+ * Menu Bar Classes
+ *=================
+ */
+
+.menubar {
+    background-color: $menubar_bg;
+    border-bottom: 1px solid $menubar_border;
+    height: 25px;
+    width: 100%;
+    padding-right: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+
+    h4 {
+        margin-top: 2px;
+        display: inline-block;
+    }
+}
+
+.menubar-button {
+    display: inline-block;
+    cursor: pointer;
+    height: 100%;
+    padding: 0 5px;
+    font-size: 0.8em;
+    line-height: 2em;
+    border-right: 1px groove $menubar_button_border;
+    border-left: 1px groove $menubar_button_border;
+}
+
+.menubar-button:hover {
+    background-color: $menubar_button_hover;
+}
+
+.menubar-button.pushed {
+    background-color: $menubar_button_pushed;
+}
+
+.login-button {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    padding-right: 30px;
+}
+
+.sw-app-label {
+    display: inline-block;
+    margin-right: 5px;
+    h4 {
+        margin-left: 10px;
+    }
+}
+
+.sw-version {
+    display: inline-block;
+    margin: 2px 0 5px 5px;
+    font-size: 0.65em;
+}
+
 /*
  *==============
  * Popup classes
@@ -409,7 +648,7 @@ ul.sub-menu-item {
     color: $font_bright;
 }
 
-button:mfp-close {
+button.mfp-close {
     overflow: visible;
     cursor: pointer;
     background: transparent;
@@ -514,9 +753,106 @@ button:mfp-close {
 }
 
 /*
- *=======================
+ *==============
+ * Table classes
+ *==============
+ */
+
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/*
+ *================
+ * Tooltip Classes
+ *================
+ */
+
+.tooltip {
+    position: absolute;
+    z-index: 1030;
+    display: block;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    visibility: visible;
+}
+
+.tooltip.in {
+    opacity: 1.0;
+    filter: alpha(opacity=1);
+}
+
+.tooltip.top {
+    padding: 5px 0;
+    margin-top: -3px;
+    .tooltip-arrow {
+        bottom: 0;
+        left: 50%;
+        margin-left: -5px;
+        border-top-color: $popup_bg;
+        border-width: 5px 5px 0;
+    }
+}
+
+.tooltip.right {
+    padding: 0 5px;
+    margin-right: 3px;
+    .tooltip-arrow {
+        top: 50%;
+        left: 0;
+        margin-top: -5px;
+        border-right-color: $popup_bg;
+        border-width: 5px 5px 5px 0;
+    }
+}
+
+.tooltip.bottom {
+    padding: 5px 0;
+    margin-top: 3px;
+    .tooltip-arrow {
+        top: 0;
+        left: 50%;
+        margin-left: -5px;
+        border-bottom-color: $popup_bg;
+        border-width: 0 5px 5px;
+    }
+}
+
+.tooltip.left {
+    padding: 0 5px;
+    margin-left: -12px;
+    .tooltip-arrow {
+        top: 50%;
+        right: 0;
+        margin-top: -5px;
+        border-left-color: $popup_bg;
+        border-width: 5px 0 5px 5px;
+    }
+}
+
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.tooltip-inner {
+    max-width: 300px;
+    padding: 8px;
+    font-weight: normal;
+    font-size: 0.8em;
+    background-color: $popup_bg;
+    @include sw-radius;
+    box-shadow: 0 0 2px $dropdown_shadow;
+}
+
+/*
+ *=========================
  * Base classes for Widgets
- *=======================
+ *=========================
  */
 
 .flipped {
@@ -525,20 +861,10 @@ button:mfp-close {
     transform: rotateY(180deg);
 }
 
-.graphdiv {
-    position: relative;
-    top: 15px;
-    left: 0;
-    .tooltip-inner {
-        font-size: 0.6em;
-        font-weight: bold;
-    }
-}
-
 .widget {
-    -webkit-transition: 0.6s;
-    -moz-transition: 0.6s;
-    transition: 0.6s;
+    -webkit-transition: 0.25s;
+    -moz-transition: 0.25s;
+    transition: 0.25s;
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
@@ -581,7 +907,6 @@ button:mfp-close {
     transform: rotateY(180deg);
     overflow: hidden;
     .widget-main {
-        top: 35px;
         overflow: hidden;
     }
 }
@@ -600,6 +925,7 @@ button:mfp-close {
 }
 
 .widget-container {
+    display: inline-block;
     -webkit-perspective: 1000;
     -moz-perspective: 1000;
     perspective: 1000;
@@ -630,7 +956,7 @@ button:mfp-close {
     height: 25px;
     width: 100%;
     z-index: 999;
-    border-top: 1px solid $menubar_border;
+    border-top: 1px solid $button_border;
     background-color: $widget_title_bg;
     @include sw-radius-bottom-left;
     @include sw-radius-bottom-right;
@@ -642,8 +968,27 @@ button:mfp-close {
     padding: 0 10px;
     font-size: 0.8em;
     line-height: 1.75em;
-    border-right: 1px solid $menubar_border;
-    border-left: 1px solid $menubar_border;
+    cursor: pointer;
+}
+
+.widget-footer-button:hover {
+    background-color: $menubar_button_hover;
+}
+
+.widget-footer-button.go-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.widget-footer-button.left-button {
+    border-right: 1px solid $button_border;
+    @include sw-radius-bottom-left;
+}
+
+.widget-footer-button.right-button {
+    border-left: 1px solid $button_border;
+    @include sw-radius-bottom-right;
 }
 
 .widget-front {
@@ -665,63 +1010,8 @@ button:mfp-close {
 
 .widget-main {
     width: 100%;
-    height: 88%;
+    height: 100%;
     position: absolute;
     left: 0;
     padding: 0;
-}
-
-.widget-title {
-    border-bottom: 1px solid $menubar_border;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 35px;
-    width: 100%;
-    z-index: 999;
-    background-color: $widget_title_bg;
-    @include sw-radius-top-right;
-    h4 {
-        margin: 0 10px;
-        vertical-align: top;
-        font-size: 0.8em;
-        height: 100%;
-        display: inline-block;
-        -webkit-margin-before: 0;
-        line-height: 3.0em;
-    }
-    input {
-        margin-left: 10px;
-        position: relative;
-        top: -5px;
-        vertical-align: bottom;
-    }
-    .search-title {
-        overflow: hidden;
-        margin-left: 10px;
-        display: inline-block;
-        width: auto;
-    }
-}
-
-.widget-title-button {
-    display: inline-block;
-    height: 100%;
-    padding: 0 10px;
-    font-size: 0.8em;
-    line-height: 2.75em;
-    vertical-align: bottom;
-    border-right: 1px solid $menubar_border;
-    border-left: 1px solid $menubar_border;
-    cursor: pointer;
-}
-
-.widget-title-button:hover {
-    background-color: $button_bg;
-}
-
-.widget-title-head {
-    display: inline-block;
-    height: 100%;
-    position: relative;
 }

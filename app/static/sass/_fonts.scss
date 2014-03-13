@@ -12,7 +12,26 @@
 .elegant-icons {
     display: inline-block;
     font-family: 'ElegantIcons';
-    font-size: 0.9em;
+}
+
+.arrow-back:before {
+    content: "\4a";
+}
+
+.arrow-carrot-down-alt2:before {
+    content: "\3b";
+}
+
+.arrow-carrot-left-alt2:before {
+    content: "\3c";
+}
+
+.arrow-carrot-right-alt2:before {
+    content: "\3d";
+}
+
+.arrow-carrot-up-alt2:before {
+    content: "\3a";
 }
 
 .arrow-triangle-down:before {
@@ -21,6 +40,22 @@
 
 .arrow-triangle-right:before {
     content: "\45";
+}
+
+.arrow-triangle-up:before {
+    content: "\42";
+}
+
+.icon-calendar:before {
+    content: "\e023";
+}
+
+.icon-check:before {
+    content: "\4e";
+}
+
+.icon-check-alt:before {
+    content: "\e052";
 }
 
 .icon-close:before {
@@ -33,6 +68,26 @@
 
 .icon-cog:before {
     content: "\e037";
+}
+
+.icon-error-triangle:before {
+    content: "\e063";
+}
+
+.icon-loading:before {
+    content: "\e02d";
+}
+
+.icon-minus-alt2:before {
+    content: "\4f";
+}
+
+.icon-plus:before {
+    content: "\4c";
+}
+
+.icon-plus-alt2:before {
+    content: "\50";
 }
 
 .icon-profile:before {

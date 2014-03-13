@@ -38,7 +38,7 @@ function statuswolf_button(button)
     {
       $(button).removeClass('pushed')
           .children('input').attr('checked', null).prop('checked', false);
-      $(button).children('label').children('span.iconic').removeClass('iconic-check-alt green').addClass('iconic-x-alt red');
+      $(button).children('label').children('span.elegant-icons').removeClass('icon-check-alt green').addClass('icon-close-alt red');
       if ($(button).hasClass('binary'))
       {
         $(button).children('label').children('span.binary-label').text('No ');
@@ -48,7 +48,7 @@ function statuswolf_button(button)
     {
       $(button).addClass('pushed')
           .children('input').attr('checked', 'Checked').prop('checked', true);
-      $(button).children('label').children('span.iconic').removeClass('iconic-x-alt red').addClass('iconic-check-alt green');
+      $(button).children('label').children('span.elegant-icons').removeClass('icon-close-alt red').addClass('icon-check-alt green');
       if ($(button).hasClass('binary'))
       {
         $(button).children('label').children('span.binary-label').text('Yes');

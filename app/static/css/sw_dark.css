@@ -125,6 +125,16 @@ input[type="password"]:focus {
 }
 
 /* line 58, ../sass/_base.scss */
+input.input-append {
+  -webkit-border-radius: 0 0 0 2px;
+  -moz-border-radius: 0 0 0 2px;
+  -ms-border-radius: 0 0 0 2px;
+  -o-border-radius: 0 0 0 2px;
+  border-radius: 0 0 0 2px;
+  vertical-align: top;
+}
+
+/* line 67, ../sass/_base.scss */
 select {
   -webkit-appearance: push-button;
   -moz-appearance: push-button;
@@ -145,7 +155,7 @@ select {
   box-shadow: none;
 }
 
-/* line 72, ../sass/_base.scss */
+/* line 81, ../sass/_base.scss */
 ul, ol {
   padding: 0;
 }
@@ -155,13 +165,25 @@ ul, ol {
  * Base Classes
  *=============
  */
-/* line 82, ../sass/_base.scss */
+/* line 91, ../sass/_base.scss */
 .blur {
   -webkit-filter: blur(3px);
   filter: blur(3px);
 }
 
-/* line 87, ../sass/_base.scss */
+/* line 96, ../sass/_base.scss */
+.bodyshade {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  background-color: rgba(205, 205, 205, 0.4);
+  -webkit-transition: opacity 0.25s linear;
+  -moz-transition: opacity 0.25s linear;
+  transition: opacity 0.25s linear;
+}
+
+/* line 107, ../sass/_base.scss */
 .container {
   position: relative;
   height: 100%;
@@ -169,7 +191,7 @@ ul, ol {
   margin: 0 auto;
 }
 
-/* line 94, ../sass/_base.scss */
+/* line 114, ../sass/_base.scss */
 .container-spacer {
   position: relative;
   top: 0;
@@ -177,22 +199,37 @@ ul, ol {
   width: 100%;
 }
 
-/* line 101, ../sass/_base.scss */
+/* line 121, ../sass/_base.scss */
+.font-reset {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* line 125, ../sass/_base.scss */
 .green {
   color: darkgreen;
 }
 
-/* line 105, ../sass/_base.scss */
+/* line 129, ../sass/_base.scss */
+.hidden {
+  visibility: hidden;
+}
+
+/* line 133, ../sass/_base.scss */
 .nodisplay {
   display: none;
 }
 
-/* line 109, ../sass/_base.scss */
+/* line 137, ../sass/_base.scss */
+.no-overflow {
+  overflow: hidden;
+}
+
+/* line 141, ../sass/_base.scss */
 .red {
   color: red;
 }
 
-/* line 113, ../sass/_base.scss */
+/* line 145, ../sass/_base.scss */
 .sw-button {
   display: inline-block;
   margin: 0 10px 0 0;
@@ -210,100 +247,171 @@ ul, ol {
   cursor: pointer;
 }
 
-/* line 126, ../sass/_base.scss */
+/* line 158, ../sass/_base.scss */
 .sw-button:hover {
   background-color: #505050;
   border: 1px solid rgba(24, 24, 24, 0.1);
 }
 
-/* line 131, ../sass/_base.scss */
+/* line 163, ../sass/_base.scss */
 .sw-button.push-button {
   margin: 0;
   padding: 2px;
   height: 100%;
 }
-/* line 135, ../sass/_base.scss */
+/* line 167, ../sass/_base.scss */
 .sw-button.push-button input {
   position: absolute;
   top: -20px;
   display: none;
 }
 
-/* line 142, ../sass/_base.scss */
+/* line 174, ../sass/_base.scss */
 .transparent {
   opacity: 0;
 }
 
 /*
- *=================
- * Menu Bar Classes
- *=================
+ *===============
+ * Button Classes
+ *===============
  */
-/* line 152, ../sass/_base.scss */
-.menubar {
-  background-color: #181818;
-  border-bottom: 1px solid rgba(234, 234, 234, 0.25);
-  height: 25px;
-  width: 100%;
-  padding-right: 10px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-}
-/* line 163, ../sass/_base.scss */
-.menubar h4 {
-  margin-top: 2px;
+/* line 185, ../sass/_base.scss */
+.input-addon-button {
+  font-size: 10pt;
+  line-height: 14px;
+  vertical-align: top;
+  text-align: center;
+  margin: 0;
   display: inline-block;
+  width: auto;
+  height: 14px;
+  padding: 4px 5px;
+  color: rgba(234, 234, 234, 0.75);
+  background-color: #404040;
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  -o-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+  border: 1px solid rgba(234, 234, 234, 0.1);
+  cursor: pointer;
 }
 
-/* line 169, ../sass/_base.scss */
-.menubar-button {
+/* line 202, ../sass/_base.scss */
+.input-addon-button:hover {
+  color: #f0f0f0;
+  background-color: #505050;
+  borrder: 1px solid #505050;
+}
+
+/* line 208, ../sass/_base.scss */
+.push-button {
+  display: inline-block;
+  margin: 0;
+  padding: 2px;
+  height: 100%;
+  font-size: 0.75em;
+  line-height: 1.5em;
+  font-weight: normal;
+  background-color: #404040;
+  border: 1px solid rgba(234, 234, 234, 0.1);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+/* line 220, ../sass/_base.scss */
+.push-button input {
+  position: absolute;
+  top: -20px;
+  display: none;
+}
+/* line 226, ../sass/_base.scss */
+.push-button label span {
+  padding: 0 10px 0 5px;
+  text-align: center;
+  font-weight: normal;
   display: inline-block;
   cursor: pointer;
-  height: 100%;
-  padding: 0 5px;
-  font-size: 0.8em;
-  line-height: 2em;
-  border-right: 1px groove rgba(234, 234, 234, 0.1);
-  border-left: 1px groove rgba(234, 234, 234, 0.1);
 }
 
-/* line 180, ../sass/_base.scss */
-.menubar-button:hover {
+/* line 236, ../sass/_base.scss */
+.push-button:hover {
+  color: #f0f0f0;
+  background-color: #505050;
+}
+
+/* line 241, ../sass/_base.scss */
+.push-button.pushed {
+  background-color: #303030;
+  border-top-left-radius: 1px solid rgba(24, 24, 24, 0.25);
+}
+
+/* line 246, ../sass/_base.scss */
+.toggle-button {
+  display: inline-block;
+  margin: 0;
+  padding: 2px;
+  height: 100%;
+  font-size: 0.75em;
+  line-height: 1.5em;
+  font-weight: normal;
+  color: rgba(234, 234, 234, 0.75);
   background-color: #404040;
+  border: 1px solid rgba(234, 234, 234, 0.1);
+  cursor: pointer;
 }
-
-/* line 184, ../sass/_base.scss */
-.menubar-button.pushed {
-  background-color: rgba(80, 80, 80, 0.45);
+/* line 259, ../sass/_base.scss */
+.toggle-button label span {
+  padding: 0 10px;
+  text-align: center;
+  font-weight: normal;
+  cursor: pointer;
 }
-
-/* line 188, ../sass/_base.scss */
-.login-button {
-  display: inline-block;
+/* line 265, ../sass/_base.scss */
+.toggle-button label input {
   position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  padding-right: 30px;
+  top: -20px;
+  display: none;
 }
 
-/* line 197, ../sass/_base.scss */
-.sw-app-label {
-  display: inline-block;
-  margin-right: 5px;
-}
-/* line 200, ../sass/_base.scss */
-.sw-app-label h4 {
-  margin-left: 10px;
+/* line 273, ../sass/_base.scss */
+.toggle-button:hover {
+  color: #f0f0f0;
+  background-color: #505050;
+  border: 1px solid rgba(24, 24, 24, 0.1);
 }
 
-/* line 205, ../sass/_base.scss */
-.sw-version {
-  display: inline-block;
-  margin: 2px 0 5px 5px;
-  font-size: 0.65em;
+/* line 279, ../sass/_base.scss */
+.toggle-button.toggle-on {
+  background-color: #303030;
+  border: 1px solid rgba(24, 24, 24, 0.25);
+}
+
+/* line 284, ../sass/_base.scss */
+.toggle-button-group {
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+/* line 288, ../sass/_base.scss */
+.toggle-button-group .toggle-button:first-child {
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  -ms-border-radius: 3px 0 0 3px;
+  -o-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+}
+/* line 291, ../sass/_base.scss */
+.toggle-button-group .toggle-button:last-child {
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  -o-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
 }
 
 /*
@@ -311,13 +419,13 @@ ul, ol {
  * Dropdown Menu Classes
  *======================
  */
-/* line 217, ../sass/_base.scss */
+/* line 302, ../sass/_base.scss */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* line 222, ../sass/_base.scss */
+/* line 307, ../sass/_base.scss */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -338,37 +446,37 @@ ul, ol {
   border-radius: 0 2px 2px 2px;
   -webkit-margin-before: 5px;
 }
-/* line 237, ../sass/_base.scss */
+/* line 322, ../sass/_base.scss */
 .dropdown-menu li {
   width: 100%;
   margin-bottom: 1px;
   cursor: pointer;
 }
-/* line 241, ../sass/_base.scss */
+/* line 326, ../sass/_base.scss */
 .dropdown-menu li a {
   color: #cdcdcd;
 }
-/* line 244, ../sass/_base.scss */
+/* line 329, ../sass/_base.scss */
 .dropdown-menu li span {
   line-height: 1.5em;
   margin-right: 8px;
   margin-left: 8px;
 }
-/* line 250, ../sass/_base.scss */
+/* line 335, ../sass/_base.scss */
 .dropdown-menu li:hover {
   background-color: #404040;
 }
-/* line 253, ../sass/_base.scss */
+/* line 338, ../sass/_base.scss */
 .dropdown-menu li.menu-section {
   font-weight: bold;
 }
-/* line 257, ../sass/_base.scss */
+/* line 342, ../sass/_base.scss */
 .dropdown-menu li.menu-section:hover {
   cursor: default;
   color: #cdcdcd;
   background-color: gray;
 }
-/* line 262, ../sass/_base.scss */
+/* line 347, ../sass/_base.scss */
 .dropdown-menu li.divider {
   height: 1px;
   background-color: rgba(24, 24, 24, 0.75);
@@ -379,7 +487,7 @@ ul, ol {
   display: inline-block;
 }
 
-/* line 273, ../sass/_base.scss */
+/* line 358, ../sass/_base.scss */
 .dropdown-menu:before {
   content: '';
   display: inline-block;
@@ -391,7 +499,7 @@ ul, ol {
   left: 7px;
 }
 
-/* line 284, ../sass/_base.scss */
+/* line 369, ../sass/_base.scss */
 .dropdown-menu:after {
   content: '';
   display: inline-block;
@@ -403,7 +511,7 @@ ul, ol {
   left: 8px;
 }
 
-/* line 295, ../sass/_base.scss */
+/* line 380, ../sass/_base.scss */
 .menu-left {
   right: 0;
   left: auto;
@@ -413,29 +521,29 @@ ul, ol {
   -o-border-radius: 2px 0 2px 2px;
   border-radius: 2px 0 2px 2px;
 }
-/* line 300, ../sass/_base.scss */
+/* line 385, ../sass/_base.scss */
 .menu-left li span {
   margin-right: 8px;
 }
 
-/* line 306, ../sass/_base.scss */
+/* line 391, ../sass/_base.scss */
 .menu-left:before {
   right: 6px;
   left: auto;
 }
 
-/* line 311, ../sass/_base.scss */
+/* line 396, ../sass/_base.scss */
 .menu-left:after {
   right: 7px;
   left: auto;
 }
 
-/* line 316, ../sass/_base.scss */
+/* line 401, ../sass/_base.scss */
 .open > .dropdown-menu {
   display: block;
 }
 
-/* line 321, ../sass/_base.scss */
+/* line 406, ../sass/_base.scss */
 ul.sub-menu-item ul.sub-menu {
   display: none;
   float: right;
@@ -445,8 +553,9 @@ ul.sub-menu-item ul.sub-menu {
   margin-left: -6px;
   -webkit-animation: fadeOut 0.5s;
   animation: fadeOut 0.5s;
+  white-space: nowrap;
 }
-/* line 331, ../sass/_base.scss */
+/* line 417, ../sass/_base.scss */
 ul.sub-menu-item ul.sub-menu:before {
   border-left: 0;
   border-top: 7px solid transparent;
@@ -455,7 +564,7 @@ ul.sub-menu-item ul.sub-menu:before {
   top: 2px;
   left: -7px;
 }
-/* line 339, ../sass/_base.scss */
+/* line 425, ../sass/_base.scss */
 ul.sub-menu-item ul.sub-menu:after {
   border-left: 0;
   border-top: 6px solid transparent;
@@ -464,7 +573,7 @@ ul.sub-menu-item ul.sub-menu:after {
   top: 3px;
   left: -6px;
 }
-/* line 348, ../sass/_base.scss */
+/* line 434, ../sass/_base.scss */
 ul.sub-menu-item li:hover ul.sub-menu {
   display: block;
   position: absolute;
@@ -479,11 +588,188 @@ ul.sub-menu-item li:hover ul.sub-menu {
 }
 
 /*
+ *=======================
+ * Loader Spinner classes
+ *=======================
+ */
+/* line 451, ../sass/_base.scss */
+.spinner {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+}
+
+/* line 458, ../sass/_base.scss */
+.spinner-error, .spinner-holder {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  font-size: 36px;
+}
+
+/* line 464, ../sass/_base.scss */
+.spinner-holder {
+  -webkit-animation-name: move-spinner;
+  -moz-animation-name: move-spinner;
+  -ms-animation-name: move-spinner;
+  -o-animation-name: move-spinner;
+  animation-name: move-spinner;
+  -webkit-animation-duration: 2.9s;
+  -moz-animation-duration: 2.9s;
+  -ms-animation-duration: 2.9s;
+  -o-animation-duration: 2.9s;
+  animation-duration: 2.9s;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-timing-function: linear;
+  -ms-animation-timing-function: linear;
+  -o-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+
+@-webkit-keyframes move-spinner {
+  /* line 489, ../sass/_base.scss */
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  /* line 492, ../sass/_base.scss */
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes move-spinner {
+  /* line 498, ../sass/_base.scss */
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+
+  /* line 501, ../sass/_base.scss */
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-ms-keyframes move-spinner {
+  /* line 507, ../sass/_base.scss */
+  0% {
+    -ms-transform: rotate(0deg);
+  }
+
+  /* line 510, ../sass/_base.scss */
+  100% {
+    -ms-transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes move-spinner {
+  /* line 516, ../sass/_base.scss */
+  0% {
+    -o-transform: rotate(0deg);
+  }
+
+  /* line 519, ../sass/_base.scss */
+  100% {
+    -o-transform: rotate(360deg);
+  }
+}
+
+@keyframes move-spinner {
+  /* line 525, ../sass/_base.scss */
+  0% {
+    transform: rotate(0deg);
+  }
+
+  /* line 528, ../sass/_base.scss */
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ *=================
+ * Menu Bar Classes
+ *=================
+ */
+/* line 538, ../sass/_base.scss */
+.menubar {
+  background-color: #181818;
+  border-bottom: 1px solid rgba(234, 234, 234, 0.25);
+  height: 25px;
+  width: 100%;
+  padding-right: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+/* line 549, ../sass/_base.scss */
+.menubar h4 {
+  margin-top: 2px;
+  display: inline-block;
+}
+
+/* line 555, ../sass/_base.scss */
+.menubar-button {
+  display: inline-block;
+  cursor: pointer;
+  height: 100%;
+  padding: 0 5px;
+  font-size: 0.8em;
+  line-height: 2em;
+  border-right: 1px groove rgba(234, 234, 234, 0.1);
+  border-left: 1px groove rgba(234, 234, 234, 0.1);
+}
+
+/* line 566, ../sass/_base.scss */
+.menubar-button:hover {
+  background-color: #404040;
+}
+
+/* line 570, ../sass/_base.scss */
+.menubar-button.pushed {
+  background-color: rgba(80, 80, 80, 0.45);
+}
+
+/* line 574, ../sass/_base.scss */
+.login-button {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  padding-right: 30px;
+}
+
+/* line 583, ../sass/_base.scss */
+.sw-app-label {
+  display: inline-block;
+  margin-right: 5px;
+}
+/* line 586, ../sass/_base.scss */
+.sw-app-label h4 {
+  margin-left: 10px;
+}
+
+/* line 591, ../sass/_base.scss */
+.sw-version {
+  display: inline-block;
+  margin: 2px 0 5px 5px;
+  font-size: 0.65em;
+}
+
+/*
  *==============
  * Popup classes
  *==============
  */
-/* line 363, ../sass/_base.scss */
+/* line 602, ../sass/_base.scss */
 .popup {
   position: relative;
   color: rgba(234, 234, 234, 0.75);
@@ -499,12 +785,12 @@ ul.sub-menu-item li:hover ul.sub-menu {
   border-radius: 0 2px 2px 2px;
 }
 
-/* line 374, ../sass/_base.scss */
+/* line 613, ../sass/_base.scss */
 .mfp-hide {
   display: none !important;
 }
 
-/* line 378, ../sass/_base.scss */
+/* line 617, ../sass/_base.scss */
 .mfp-bg {
   top: 0;
   left: 0;
@@ -516,7 +802,7 @@ ul.sub-menu-item li:hover ul.sub-menu {
   background-color: rgba(234, 234, 234, 0.25);
 }
 
-/* line 389, ../sass/_base.scss */
+/* line 628, ../sass/_base.scss */
 .mfp-close {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -532,18 +818,18 @@ ul.sub-menu-item li:hover ul.sub-menu {
   color: rgba(205, 205, 205, 0.25);
 }
 
-/* line 404, ../sass/_base.scss */
+/* line 643, ../sass/_base.scss */
 .mfp-close:hover, .mfp-close:focus {
   color: #cdcdcd;
 }
 
-/* line 408, ../sass/_base.scss */
+/* line 647, ../sass/_base.scss */
 .mfp_close:active {
   color: #f0f0f0;
 }
 
-/* line 412, ../sass/_base.scss */
-button:mfp-close {
+/* line 651, ../sass/_base.scss */
+button.mfp-close {
   overflow: visible;
   cursor: pointer;
   background: transparent;
@@ -555,7 +841,7 @@ button:mfp-close {
   z-index: 506;
 }
 
-/* line 424, ../sass/_base.scss */
+/* line 663, ../sass/_base.scss */
 .mfp-container {
   text-align: center;
   position: absolute;
@@ -569,7 +855,7 @@ button:mfp-close {
   box-sizing: border-box;
 }
 
-/* line 437, ../sass/_base.scss */
+/* line 676, ../sass/_base.scss */
 .mfp-container:before {
   content: '';
   display: inline-block;
@@ -577,7 +863,7 @@ button:mfp-close {
   vertical-align: middle;
 }
 
-/* line 444, ../sass/_base.scss */
+/* line 683, ../sass/_base.scss */
 .mfp-content {
   position: relative;
   display: inline-block;
@@ -589,7 +875,7 @@ button:mfp-close {
   z-index: 505;
 }
 
-/* line 455, ../sass/_base.scss */
+/* line 694, ../sass/_base.scss */
 .mfp-wrap {
   top: 0;
   left: 0;
@@ -603,7 +889,7 @@ button:mfp-close {
   backface-visibility: hidden;
 }
 
-/* line 468, ../sass/_base.scss */
+/* line 707, ../sass/_base.scss */
 .popup-animate.mfp-bg {
   opacity: 0;
   -webkit-transition: all 0.15s ease-out;
@@ -611,41 +897,41 @@ button:mfp-close {
   transition: all 0.15s ease-out;
 }
 
-/* line 475, ../sass/_base.scss */
+/* line 714, ../sass/_base.scss */
 .popup-animate.mfp-bg.mfp-ready {
   opacity: 1;
 }
 
-/* line 479, ../sass/_base.scss */
+/* line 718, ../sass/_base.scss */
 .popup-animate.mfp-bg.mfp-removing {
   opacity: 0;
 }
 
-/* line 483, ../sass/_base.scss */
+/* line 722, ../sass/_base.scss */
 .popup-form-data {
   padding: 0;
   margin: 0 0 10px 15px;
 }
 
-/* line 488, ../sass/_base.scss */
+/* line 727, ../sass/_base.scss */
 .popup-form-data p {
   font-size: 0.8em;
 }
 
-/* line 492, ../sass/_base.scss */
+/* line 731, ../sass/_base.scss */
 .blur {
   filter: blur(3px);
   -webkit-filter: blur(3px);
 }
 
-/* line 497, ../sass/_base.scss */
+/* line 736, ../sass/_base.scss */
 .save_form_row {
   width: 100%;
   padding-bottom: 3px;
   font-size: 0.8em;
 }
 
-/* line 503, ../sass/_base.scss */
+/* line 742, ../sass/_base.scss */
 .save_parameter {
   width: 25%;
   text-align: right;
@@ -654,41 +940,141 @@ button:mfp-close {
   color: rgba(234, 234, 234, 0.75);
 }
 
-/* line 511, ../sass/_base.scss */
+/* line 750, ../sass/_base.scss */
 .save_value {
   width: 70%;
   display: inline-block;
 }
 
 /*
- *=======================
- * Base classes for Widgets
- *=======================
+ *==============
+ * Table classes
+ *==============
  */
-/* line 522, ../sass/_base.scss */
+/* line 761, ../sass/_base.scss */
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/*
+ *================
+ * Tooltip Classes
+ *================
+ */
+/* line 772, ../sass/_base.scss */
+.tooltip {
+  position: absolute;
+  z-index: 1030;
+  display: block;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  visibility: visible;
+}
+
+/* line 781, ../sass/_base.scss */
+.tooltip.in {
+  opacity: 1.0;
+  filter: alpha(opacity=1);
+}
+
+/* line 786, ../sass/_base.scss */
+.tooltip.top {
+  padding: 5px 0;
+  margin-top: -3px;
+}
+/* line 789, ../sass/_base.scss */
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-top-color: rgba(24, 24, 24, 0.9);
+  border-width: 5px 5px 0;
+}
+
+/* line 798, ../sass/_base.scss */
+.tooltip.right {
+  padding: 0 5px;
+  margin-right: 3px;
+}
+/* line 801, ../sass/_base.scss */
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-right-color: rgba(24, 24, 24, 0.9);
+  border-width: 5px 5px 5px 0;
+}
+
+/* line 810, ../sass/_base.scss */
+.tooltip.bottom {
+  padding: 5px 0;
+  margin-top: 3px;
+}
+/* line 813, ../sass/_base.scss */
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-bottom-color: rgba(24, 24, 24, 0.9);
+  border-width: 0 5px 5px;
+}
+
+/* line 822, ../sass/_base.scss */
+.tooltip.left {
+  padding: 0 5px;
+  margin-left: -12px;
+}
+/* line 825, ../sass/_base.scss */
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-left-color: rgba(24, 24, 24, 0.9);
+  border-width: 5px 0 5px 5px;
+}
+
+/* line 834, ../sass/_base.scss */
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+/* line 842, ../sass/_base.scss */
+.tooltip-inner {
+  max-width: 300px;
+  padding: 8px;
+  font-weight: normal;
+  font-size: 0.8em;
+  background-color: rgba(24, 24, 24, 0.9);
+  -webkit-border-radius: 0 2px 2px 2px;
+  -moz-border-radius: 0 2px 2px 2px;
+  -ms-border-radius: 0 2px 2px 2px;
+  -o-border-radius: 0 2px 2px 2px;
+  border-radius: 0 2px 2px 2px;
+  box-shadow: 0 0 2px black;
+}
+
+/*
+ *=========================
+ * Base classes for Widgets
+ *=========================
+ */
+/* line 858, ../sass/_base.scss */
 .flipped {
   -webkit-transform: rotateY(180deg);
   -moz-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
 
-/* line 528, ../sass/_base.scss */
-.graphdiv {
-  position: relative;
-  top: 15px;
-  left: 0;
-}
-/* line 532, ../sass/_base.scss */
-.graphdiv .tooltip-inner {
-  font-size: 0.6em;
-  font-weight: bold;
-}
-
-/* line 538, ../sass/_base.scss */
+/* line 864, ../sass/_base.scss */
 .widget {
-  -webkit-transition: 0.6s;
-  -moz-transition: 0.6s;
-  transition: 0.6s;
+  -webkit-transition: 0.25s;
+  -moz-transition: 0.25s;
+  transition: 0.25s;
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
@@ -697,7 +1083,7 @@ button:mfp-close {
   width: 100%;
 }
 
-/* line 550, ../sass/_base.scss */
+/* line 876, ../sass/_base.scss */
 .widget-action {
   display: inline-block;
   position: absolute;
@@ -709,12 +1095,12 @@ button:mfp-close {
   cursor: pointer;
 }
 
-/* line 561, ../sass/_base.scss */
+/* line 887, ../sass/_base.scss */
 .widget-action:hover {
   color: #f0f0f0;
 }
 
-/* line 565, ../sass/_base.scss */
+/* line 891, ../sass/_base.scss */
 .widget-back {
   width: 100%;
   height: 100%;
@@ -738,13 +1124,12 @@ button:mfp-close {
   transform: rotateY(180deg);
   overflow: hidden;
 }
-/* line 583, ../sass/_base.scss */
+/* line 909, ../sass/_base.scss */
 .widget-back .widget-main {
-  top: 35px;
   overflow: hidden;
 }
 
-/* line 589, ../sass/_base.scss */
+/* line 914, ../sass/_base.scss */
 .widget-close {
   display: inline-block;
   position: absolute;
@@ -754,13 +1139,14 @@ button:mfp-close {
   cursor: pointer;
 }
 
-/* line 598, ../sass/_base.scss */
+/* line 923, ../sass/_base.scss */
 .widget-close:hover {
   color: #f0f0f0;
 }
 
-/* line 602, ../sass/_base.scss */
+/* line 927, ../sass/_base.scss */
 .widget-container {
+  display: inline-block;
   -webkit-perspective: 1000;
   -moz-perspective: 1000;
   perspective: 1000;
@@ -772,28 +1158,28 @@ button:mfp-close {
   -ms-border-radius: 0 2px 2px 2px;
   -o-border-radius: 0 2px 2px 2px;
   border-radius: 0 2px 2px 2px;
-  -webkit-transition: all 0.5s linear;
-  -moz-transition: all 0.5s linear;
-  transition: all 0.5s linear;
+  -webkit-transition: all 0.25s linear;
+  -moz-transition: all 0.25s linear;
+  transition: all 0.25s linear;
 }
 
-/* line 613, ../sass/_base.scss */
+/* line 939, ../sass/_base.scss */
 .widget-container.cols-1 {
   width: 100%;
   height: 100%;
 }
 
-/* line 618, ../sass/_base.scss */
+/* line 944, ../sass/_base.scss */
 .widget-container.cols-2 {
   width: 48%;
 }
 
-/* line 622, ../sass/_base.scss */
+/* line 948, ../sass/_base.scss */
 .widget-container.cols-3 {
   width: 31%;
 }
 
-/* line 626, ../sass/_base.scss */
+/* line 952, ../sass/_base.scss */
 .widget-footer {
   position: absolute;
   left: 0;
@@ -801,8 +1187,8 @@ button:mfp-close {
   height: 25px;
   width: 100%;
   z-index: 999;
-  border-top: 1px solid rgba(234, 234, 234, 0.25);
-  background-color: #404040;
+  border-top: 1px solid rgba(234, 234, 234, 0.1);
+  background-color: #202020;
   -webkit-border-bottom-left-radius: 2px;
   -moz-border-radius-bottomleft: 2px;
   border-bottom-left-radius: 2px;
@@ -811,18 +1197,45 @@ button:mfp-close {
   border-bottom-right-radius: 2px;
 }
 
-/* line 639, ../sass/_base.scss */
+/* line 965, ../sass/_base.scss */
 .widget-footer-button {
   display: inline-block;
   height: 100%;
   padding: 0 10px;
   font-size: 0.8em;
   line-height: 1.75em;
-  border-right: 1px solid rgba(234, 234, 234, 0.25);
-  border-left: 1px solid rgba(234, 234, 234, 0.25);
+  cursor: pointer;
 }
 
-/* line 649, ../sass/_base.scss */
+/* line 974, ../sass/_base.scss */
+.widget-footer-button:hover {
+  background-color: #404040;
+}
+
+/* line 978, ../sass/_base.scss */
+.widget-footer-button.go-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* line 984, ../sass/_base.scss */
+.widget-footer-button.left-button {
+  border-right: 1px solid rgba(234, 234, 234, 0.1);
+  -webkit-border-bottom-left-radius: 2px;
+  -moz-border-radius-bottomleft: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+/* line 989, ../sass/_base.scss */
+.widget-footer-button.right-button {
+  border-left: 1px solid rgba(234, 234, 234, 0.1);
+  -webkit-border-bottom-right-radius: 2px;
+  -moz-border-radius-bottomright: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+/* line 994, ../sass/_base.scss */
 .widget-front {
   width: 100%;
   height: 100%;
@@ -844,77 +1257,13 @@ button:mfp-close {
   z-index: 2;
 }
 
-/* line 666, ../sass/_base.scss */
+/* line 1011, ../sass/_base.scss */
 .widget-main {
   width: 100%;
-  height: 88%;
+  height: 100%;
   position: absolute;
   left: 0;
   padding: 0;
-}
-
-/* line 674, ../sass/_base.scss */
-.widget-title {
-  border-bottom: 1px solid rgba(234, 234, 234, 0.25);
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 35px;
-  width: 100%;
-  z-index: 999;
-  background-color: #404040;
-  -webkit-border-top-right-radius: 2px;
-  -moz-border-radius-topright: 2px;
-  border-top-right-radius: 2px;
-}
-/* line 684, ../sass/_base.scss */
-.widget-title h4 {
-  margin: 0 10px;
-  vertical-align: top;
-  font-size: 0.8em;
-  height: 100%;
-  display: inline-block;
-  -webkit-margin-before: 0;
-  line-height: 3.0em;
-}
-/* line 693, ../sass/_base.scss */
-.widget-title input {
-  margin-left: 10px;
-  position: relative;
-  top: -5px;
-  vertical-align: bottom;
-}
-/* line 699, ../sass/_base.scss */
-.widget-title .search-title {
-  overflow: hidden;
-  margin-left: 10px;
-  display: inline-block;
-  width: auto;
-}
-
-/* line 707, ../sass/_base.scss */
-.widget-title-button {
-  display: inline-block;
-  height: 100%;
-  padding: 0 10px;
-  font-size: 0.8em;
-  line-height: 2.75em;
-  vertical-align: bottom;
-  border-right: 1px solid rgba(234, 234, 234, 0.25);
-  border-left: 1px solid rgba(234, 234, 234, 0.25);
-  cursor: pointer;
-}
-
-/* line 719, ../sass/_base.scss */
-.widget-title-button:hover {
-  background-color: #404040;
-}
-
-/* line 723, ../sass/_base.scss */
-.widget-title-head {
-  display: inline-block;
-  height: 100%;
-  position: relative;
 }
 
 @font-face {
@@ -929,35 +1278,104 @@ button:mfp-close {
 .elegant-icons {
   display: inline-block;
   font-family: 'ElegantIcons';
-  font-size: 0.9em;
 }
 
-/* line 18, ../sass/_fonts.scss */
+/* line 17, ../sass/_fonts.scss */
+.arrow-back:before {
+  content: "\4a";
+}
+
+/* line 21, ../sass/_fonts.scss */
+.arrow-carrot-down-alt2:before {
+  content: "\3b";
+}
+
+/* line 25, ../sass/_fonts.scss */
+.arrow-carrot-left-alt2:before {
+  content: "\3c";
+}
+
+/* line 29, ../sass/_fonts.scss */
+.arrow-carrot-right-alt2:before {
+  content: "\3d";
+}
+
+/* line 33, ../sass/_fonts.scss */
+.arrow-carrot-up-alt2:before {
+  content: "\3a";
+}
+
+/* line 37, ../sass/_fonts.scss */
 .arrow-triangle-down:before {
   content: "\43";
 }
 
-/* line 22, ../sass/_fonts.scss */
+/* line 41, ../sass/_fonts.scss */
 .arrow-triangle-right:before {
   content: "\45";
 }
 
-/* line 26, ../sass/_fonts.scss */
+/* line 45, ../sass/_fonts.scss */
+.arrow-triangle-up:before {
+  content: "\42";
+}
+
+/* line 49, ../sass/_fonts.scss */
+.icon-calendar:before {
+  content: "\e023";
+}
+
+/* line 53, ../sass/_fonts.scss */
+.icon-check:before {
+  content: "\4e";
+}
+
+/* line 57, ../sass/_fonts.scss */
+.icon-check-alt:before {
+  content: "\e052";
+}
+
+/* line 61, ../sass/_fonts.scss */
 .icon-close:before {
   content: "\4d";
 }
 
-/* line 30, ../sass/_fonts.scss */
+/* line 65, ../sass/_fonts.scss */
 .icon-close-alt:before {
   content: "\e051";
 }
 
-/* line 34, ../sass/_fonts.scss */
+/* line 69, ../sass/_fonts.scss */
 .icon-cog:before {
   content: "\e037";
 }
 
-/* line 38, ../sass/_fonts.scss */
+/* line 73, ../sass/_fonts.scss */
+.icon-error-triangle:before {
+  content: "\e063";
+}
+
+/* line 77, ../sass/_fonts.scss */
+.icon-loading:before {
+  content: "\e02d";
+}
+
+/* line 81, ../sass/_fonts.scss */
+.icon-minus-alt2:before {
+  content: "\4f";
+}
+
+/* line 85, ../sass/_fonts.scss */
+.icon-plus:before {
+  content: "\4c";
+}
+
+/* line 89, ../sass/_fonts.scss */
+.icon-plus-alt2:before {
+  content: "\50";
+}
+
+/* line 93, ../sass/_fonts.scss */
 .icon-profile:before {
   content: "\e08a";
 }
