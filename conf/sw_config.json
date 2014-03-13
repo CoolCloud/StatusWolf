@@ -1,5 +1,8 @@
 {
-    "debug": "true",
+    "sw_app": {
+        "debug": true,
+        "installed": true
+    },
     "db_options": {
         "driver": "pdo_mysql",
         "host": "localhost",
@@ -15,7 +18,7 @@
             "default_role": "ROLE_USER"
         },
         "ldap_options": {
-            "url": "ldaps://ldap.dev.box.net",
+            "url": "ldaps:\/\/ldap.dev.box.net",
             "binddn": "cn=nagios,ou=Services,dc=ops,dc=box,dc=net",
             "bindpw": "8CO7Tckp",
             "basedn": "ou=Employees,dc=ops,dc=box,dc=net",
@@ -23,11 +26,7 @@
             "name_key": "cn"
         }
     },
-    "logging": {
-        "level": "INFO",
-        "autorotate": true,
-        "keep": 7
-    },
+    "loggin": null,
     "graphing": {
         "d3_location": "local"
     }

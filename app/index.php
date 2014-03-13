@@ -20,14 +20,15 @@ $sw->register(new StatusWolf\Config\ConfigReaderServiceProvider());
 $sw['sw_config']->read_config_file($sw, __DIR__ . '/../conf/sw_config.json');
 $sw['sw_config']->read_config_file($sw, __DIR__ . '/../conf/sw_datasource.json');
 
+//$sw->register(new StatusWolf\Config\ConfigWriterServiceProvider());
+//$sw['sw_config.writer']->write_config_file($sw, 'sw_config.json');
+
 // Provider for logging
-$log_level = $sw['debug'] ? 'DEBUG' : $sw['sw_config.config']['logging']['level'];
+$log_level = $sw['sw_config.config']['sw_app']['debug'] ? 'DEBUG' : $sw['sw_config.config']['logging']['level'];
 $sw->register(new \Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__ . '/log/sw_log.log',
     'monolog.level' => $log_level,
 ));
-
-$sw['logger']->addDebug(json_encode($sw['sw_config.config']['auth_config']));
 
 // Providers for Authentication functions
 $sw->register(new Silex\Provider\FormServiceProvider());
