@@ -55,7 +55,7 @@
       this.isInput = this.$element.is('input');
       this.component = false;
       if (this.$element.find('input').is('.input-append') || this.$element.find('input').is('.input-prepend'))
-          this.component = this.$element.find('.input-addon-btn');
+          this.component = this.$element.find('.input-addon-button');
       this.format = options.format;
       if (!this.format) {
         if (this.isInput) this.format = this.$element.data('format');
@@ -1284,9 +1284,9 @@
 	'<div class="adjustpicker-options">' +
 	  '<table class="table-condensed no-border">' +
 		'<tr>' +
-		  '<th class="adjust-minus" colspan="3"><span class="iconic iconic-minus-alt"></span></th> ' +
+		  '<th class="adjust-minus" colspan="3"><span class="elegant-icons icon-minus-alt2"></span></th> ' +
 		  '<td class="adjuster">Now</td>' +
-		  '<th class="adjust-plus" colspan="3"><span class="iconic iconic-plus-alt"></span></th>' +
+		  '<th class="adjust-plus" colspan="3"><span class="elegant-icons icon-plus-alt2"></span></th>' +
 		'</tr>' +
         '<tr>' +
 		  '<td class="adjuster">1h</td>' +
@@ -1334,9 +1334,9 @@
     headTemplate:
       '<thead>' +
         '<tr>' +
-          '<th class="prev"><p class="iconic iconic-arrow-left-alt"></p></th>' +
+          '<th class="prev"><p class="elegant-icons arrow-carrot-left-alt2"></p></th>' +
           '<th colspan="5" class="switch"></th>' +
-          '<th class="next"><p class="iconic iconic-arrow-right-alt"></p></th>' +
+          '<th class="next"><p class="elegant-icons arrow-carrot-right-alt2"></p></th>' +
         '</tr>' +
       '</thead>',
     contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>'
@@ -1372,12 +1372,12 @@
         (is12Hours ? ' data-hour-format="12"' : '') +
         '>' +
         '<tr>' +
-          '<td><a href="#" data-action="incrementHours"><span class="iconic iconic-arrow-up-alt"></span></a></td>' +
+          '<td class="incrementor"><a href="#" data-action="incrementHours"><span class="elegant-icons arrow-carrot-up-alt2"></span></a></td>' +
           '<td class="separator"></td>' +
-          '<td><a href="#" data-action="incrementMinutes"><span class="iconic iconic-arrow-up-alt"></span></a></td>' +
+          '<td class="incrementor"><a href="#" data-action="incrementMinutes"><span class="elegant-icons arrow-carrot-up-alt2"></span></a></td>' +
           (showSeconds ?
           '<td class="separator"></td>' +
-          '<td><a href="#" data-action="incrementSeconds"><span class="iconic iconic-arrow-up-alt"></span></a></td>': '')+
+          '<td class="incrementor"><a href="#" data-action="incrementSeconds"><span class="elegant-icons arrow-carrot-up-alt2"></span></a></td>': '')+
           (is12Hours ? '<td class="separator"></td>' : '') +
         '</tr>' +
         '<tr>' +
@@ -1394,12 +1394,12 @@
           '</td>' : '') +
         '</tr>' +
         '<tr>' +
-          '<td><a href="#" data-action="decrementHours"><span class="iconic iconic-arrow-down-alt"></span></a></td>' +
+          '<td class="incrementor"><a href="#" data-action="decrementHours"><span class="elegant-icons arrow-carrot-down-alt2"></span></a></td>' +
           '<td class="separator"></td>' +
-          '<td><a href="#" data-action="decrementMinutes"><span class="iconic iconic-arrow-down-alt"></span></a></td>' +
+          '<td class="incrementor"><a href="#" data-action="decrementMinutes"><span class="elegant-icons arrow-carrot-down-alt2"></span></a></td>' +
           (showSeconds ?
           '<td class="separator"></td>' +
-          '<td><a href="#" data-action="decrementSeconds"><span class="iconic iconic-arrow-down-alt"></span></a></td>': '') +
+          '<td class="incrementor"><a href="#" data-action="decrementSeconds"><span class="elegant-icons arrow-carrot-down-alt2"></span></a></td>': '') +
           (is12Hours ? '<td class="separator"></td>' : '') +
         '</tr>' +
       '</table>' +
