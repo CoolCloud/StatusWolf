@@ -1,2 +1,4 @@
 /composer.lock
 /app/static/.sass-cache/
+
+/app/Widgets/OpenTSDBWidget/.sass-cache/
