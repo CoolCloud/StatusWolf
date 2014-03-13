@@ -608,6 +608,26 @@ ul.sub-menu-item {
     width: auto;
     margin: 20px auto 0 auto;
     @include sw-radius;
+    .popup-footer {
+        @extend .widget-footer;
+        background-color: $popup_footer_bg;
+        .popup-footer-button {
+            @extend .widget-footer-button
+        }
+        .popup-footer-button:hover {
+            background-color: $menubar_button_hover;
+       }
+       .cancel-button {
+           border-right: 1px solid $button_border;
+           @include sw-radius-bottom-left;
+       }
+       .save-button {
+           border-left: 1px solid $button_border;
+           position: absolute;
+           right: 0;
+           @include sw-radius-bottom-right;
+       }
+    }
 }
 
 .mfp-hide {
