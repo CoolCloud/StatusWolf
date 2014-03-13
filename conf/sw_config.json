@@ -27,5 +27,8 @@
         "level": "INFO",
         "autorotate": true,
         "keep": 7
+    },
+    "graphing": {
+        "d3_location": "local"
     }
 }
