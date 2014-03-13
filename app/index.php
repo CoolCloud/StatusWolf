@@ -16,14 +16,18 @@ use Symfony\Component\HttpFoundation\Request;
 $sw = new Silex\Application();
 
 // Provider for reading the application config file
-$sw->register(new StatusWolf\Config\ConfigServiceProvider(__DIR__ . '/../conf/sw_config.json'));
+$sw->register(new StatusWolf\Config\ConfigReaderServiceProvider());
+$sw['sw_config']->read_config_file($sw, __DIR__ . '/../conf/sw_config.json');
+$sw['sw_config']->read_config_file($sw, __DIR__ . '/../conf/sw_datasource.json');
 
 // Provider for logging
-$log_level = $sw['debug'] ? 'DEBUG' : $sw['logging.level'];
+$log_level = $sw['debug'] ? 'DEBUG' : $sw['sw_config.config']['logging']['level'];
 $sw->register(new \Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__ . '/log/sw_log.log',
     'monolog.level' => $log_level,
 ));
+
+$sw['logger']->addDebug(json_encode($sw['sw_config.config']['auth_config']));
 
 // Providers for Authentication functions
 $sw->register(new Silex\Provider\FormServiceProvider());
@@ -47,7 +51,7 @@ $sw->register(new Silex\Provider\SecurityServiceProvider(), array(
              ),
              'anonymous' => true,
              'users' => $sw->share(function() use($sw) {
-                 return new \StatusWolf\Security\User\SWUserProvider($sw['db'], $sw['auth_config']);
+                 return new \StatusWolf\Security\User\SWUserProvider($sw['db'], $sw['sw_config.config']['auth_config']);
              }),
          ),
      ),
@@ -61,7 +65,7 @@ $sw->register(new Silex\Provider\TwigServiceProvider(), array(
 
 // Database access provider
 $sw->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'db.options' => $sw['db_options'],
+    'db.options' => $sw['sw_config.config']['db_options'],
 ));
 
 // Controller service provider
@@ -106,7 +110,7 @@ $sw['security.authentication_listener.factory.swchainauth'] = $sw->protect(funct
             $sw['security.encoder_factory'],
             $sw['security.hide_user_not_found'],
             $sw['logger'],
-            array_merge($sw['auth_config'], $options));
+            array_merge($sw['sw_config.config']['auth_config'], $options));
     });
 
     $sw['logger']->addInfo('...And the horse you rode in on');
@@ -122,10 +126,10 @@ $sw['security.authentication_listener.factory.swchainauth'] = $sw->protect(funct
             $name,
             $sw['security.authentication.success_handler.' . $name],
             $sw['security.authentication.failure_handler.' . $name],
-            array_merge($sw['auth_config'], $options),
+            array_merge($sw['sw_config.config']['auth_config'], $options),
             $sw['logger'],
             $sw['dispatcher'],
-            $sw['auth_config']['with_csrf'] && isset($sw['form.csrf_provider']) ? $sw['form.csrf_provider'] : null
+            $sw['sw_config.config']['auth_config']['with_csrf'] && isset($sw['form.csrf_provider']) ? $sw['form.csrf_provider'] : null
         );
     });
 

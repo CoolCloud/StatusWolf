@@ -11,7 +11,7 @@
 
 namespace StatusWolf\Config;
 
-class JsonConfigReader implements ConfigReader {
+class JsonConfigReader implements ConfigReaderInterface {
 
     public function read($config_file) {
         $config = $this->parse_json($config_file);
