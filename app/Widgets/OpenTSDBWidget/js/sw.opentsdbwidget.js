@@ -115,9 +115,9 @@
                     '<li class="clone-widget" data-parent="' + that.element.attr('id') + '"><span>Clone Widget</span></li>' +
                     '<li class="dropdown"><span>Options</span><span class="elegant-icons arrow-triangle-right"></span>' +
                     '<ul class="dropdown-menu sub-menu opentsdbwidget-options-menu">' +
-                    '<li data-menu-action="set_all_spans"><span>Use this time span for all Graph Widgets</span></li>' +
-                    '<li data-menu-action="set_all_tags_form"><span>Set tags for all Graph Widgets</span></li>' +
-                    '<li data-menu-action="add_tags_to_all_form"><span>Add tag(s) to all Graph Widgets</span></li></ul></li>' +
+                    '<li data-menu-action="set_all_spans"><span>Use this time span for all OpenTSDB Widgets</span></li>' +
+                    '<li data-menu-action="set_all_tags_form"><span>Set tags for all OpenTSDB Widgets</span></li>' +
+                    '<li data-menu-action="add_tags_to_all_form"><span>Add tag(s) to all OpenTSDB Widgets</span></li></ul></li>' +
                     '<li data-menu-action="go_click_handler"><span>Refresh Graph</span></li></ul>')
                 .appendTo(sw_opentsdbwidget_frontmain);
             $('li.clone-widget').click(function(event) {
@@ -408,6 +408,7 @@
             else {
                 var proto_period = proto_widget.query_data.period;
             }
+            var proto_time_span = proto_period === "span-search" ? proto_widget.query_data.time_span : false;
             var proto_start_time = parseInt(proto_widget.graph.x.domain()[0].getTime() / 1000);
             var proto_end_time = parseInt(proto_widget.graph.x.domain()[1].getTime() / 1000);
             var widget_list = $('.widget-container.opentsdb-widget');
@@ -415,6 +416,9 @@
                 var widget_id = '#' + $(widget_element).attr('id');
                 var widget = $(widget_id).data('sw-opentsdbwidget');
                 widget.query_data.period = proto_period;
+                if (proto_time_span) {
+                    widget.query_data.time_span = proto_time_span;
+                }
                 widget.query_data.end_time = proto_end_time;
                 widget.query_data.start_time = proto_start_time;
                 if (typeof proto_no_autoupdate !== "undefined") {
@@ -426,16 +430,15 @@
             var widget = this;
             var widget_list = $('.widget-container[data-widget-type="opentsdbwidget"]');
             var tags_popup = '<div class="popup" id="set-all-tags-popup">' +
-                '<div id="set-all-tags-box"><div id="set-all-tags-head"><h4>Set tags for all Graph Widgets</h4></div>' +
-                '<div id="set-all-tags-info"><p>Replaces any existing tags for the searches in all Graph Widgets with the tags specified here.</p></div>' +
+                '<div id="set-all-tags-box"><div id="set-all-tags-head"><h4>Set tags for all OpenTSDB Widgets</h4></div>' +
+                '<div id="set-all-tags-info"><p>Replaces any existing tags for the searches in all OpenTSDB Widgets with the tags specified here.</p></div>' +
                 '<div id="set-all-tags-form" style="margin-bottom: 25px;"><div class="popup-form-data"><form onsubmit="return false;">' +
                 '<input type="text" class="input" id="new-tags" name="new-tags" value="" style="width: 500px;" onkeypress="if (event.which === 13) { $.magnificPopup.instance.items[0].data.set_all_tags(); }">' +
                 '</form></div></div>' +
-                '<div class="widget-footer" style="margin-top: 10px;">' +
-                '<div class="widget-footer-button" id="cancel-set-all-tags" onClick="$.magnificPopup.close()"><span class="iconic iconic-x-alt"><span class="font-reset"> Cancel</span></span></div>' +
-                '<div class="glue1"></div>' +
-                '<div class="widget-footer-button" id="set-all-tags-button" onClick="$.magnificPopup.instance.items[0].data.set_all_tags()">' +
-                '<span class="iconic iconic-download"><span class="font-reset"> Save</span></span></div>' +
+                '<div class="popup-footer" style="margin-top: 10px;">' +
+                '<div class="popup-footer-button cancel-button" id="cancel-set-all-tags" onClick="$.magnificPopup.close()"><span class="elegant-icons icon-close"><span class="font-reset"> Cancel</span></span></div>' +
+                '<div class="popup-footer-button save-button" id="set-all-tags-button" onClick="$.magnificPopup.instance.items[0].data.set_all_tags()">' +
+                '<span class="elegant-icons icon-check"><span class="font-reset"> Save</span></span></div>' +
                 '</div>';
             $.magnificPopup.open({
                 items: {
@@ -489,11 +492,10 @@
                 '<div id="add-tags-form" style="margin-bottom: 25px;"><div class="popup-form-data"><form onsubmit="return false;">' +
                 '<input type="text" class="input" id="new-tags" name="new-tags" value="" style="width: 500px;" onkeypress="if (event.which === 13) { $.magnificPopup.instance.items[0].data.add_tag_to_all(); }">' +
                 '</form></div></div>' +
-                '<div class="widget-footer" style="margin-top: 10px;">' +
-                '<div class="widget-footer-button" id="cancel-add-tags" onClick="$.magnificPopup.close()"><span class="iconic iconic-x-alt"><span class="font-reset"> Cancel</span></span></div>' +
-                '<div class="glue1"></div>' +
-                '<div class="widget-footer-button" id="add-tags-button" onClick="$.magnificPopup.instance.items[0].data.add_tag_to_all()">' +
-                '<span class="iconic iconic-download"><span class="font-reset"> Save</span></span></div>' +
+                '<div class="popup-footer" style="margin-top: 10px;">' +
+                '<div class="popup-footer-button cancel-button" id="cancel-add-tags" onClick="$.magnificPopup.close()"><span class="elegant-icons icon-close"></span><span> Cancel</span></div>' +
+                '<div class="widget-footer-button save-button" id="add-tags-button" onClick="$.magnificPopup.instance.items[0].data.add_tag_to_all()">' +
+                '<span class="elegant-icons icon-check"></span><span> Save</span></div>' +
                 '</div>';
             $.magnificPopup.open({
                 items: {
