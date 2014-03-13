@@ -21,9 +21,14 @@ class ApiController implements ControllerProviderInterface {
 
         $sw->mount('/api/dashboard', new ApiDashboardController());
         $sw->mount('/api/session', new ApiSessionController());
+        $sw->mount('/api/datasource', new ApiDatasourceController());
 
         $controllers = $sw['controllers_factory'];
 
+
+        /**
+         * @deprecated
+         */
         $controllers->get('/load_saved_dashboard/{dashboard_id}', function(Application $sw, $dashboard_id) {
             return $sw->redirect('/api/get_dashboard_config/' . $dashboard_id);
         })->bind('load_saved_dashboard');
